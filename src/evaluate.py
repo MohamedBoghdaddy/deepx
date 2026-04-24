@@ -36,6 +36,54 @@ def resolve_model_name(model_name: Optional[str]) -> Optional[str]:
     return DEFAULT_MODELS.get(model_name, model_name)
 
 
+def resolve_tokenizer_source(checkpoint: Dict, model_path: str, fallback_model_name: Optional[str]) -> str:
+    """Resolve a local tokenizer directory first, then fall back to the model id."""
+    tokenizer_dir_name = checkpoint.get("tokenizer_dir_name")
+    if tokenizer_dir_name:
+        tokenizer_dir = Path(model_path).resolve().parent / tokenizer_dir_name
+        if tokenizer_dir.exists():
+            return str(tokenizer_dir)
+
+    return (
+        checkpoint.get("tokenizer_name")
+        or checkpoint.get("model_name")
+        or resolve_model_name(fallback_model_name)
+    )
+
+
+def compute_per_label_metrics(
+    predictions: np.ndarray,
+    labels: np.ndarray,
+    threshold: float,
+) -> Dict[str, Dict[str, float]]:
+    """Compute per-label precision, recall, and F1 metrics."""
+    pred_binary = (predictions >= threshold).astype(int)
+    label_binary = (labels >= 0.5).astype(int)
+    per_label_metrics = {}
+
+    for index, label_name in enumerate(ASPECT_SENTIMENT_LABELS):
+        label_preds = pred_binary[:, index]
+        label_true = label_binary[:, index]
+
+        tp = int(((label_preds == 1) & (label_true == 1)).sum())
+        fp = int(((label_preds == 1) & (label_true == 0)).sum())
+        fn = int(((label_preds == 0) & (label_true == 1)).sum())
+
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+
+        per_label_metrics[label_name] = {
+            "precision": precision,
+            "recall": recall,
+            "f1": f1,
+            "support": int(label_true.sum()),
+            "predicted_count": int(label_preds.sum()),
+        }
+
+    return per_label_metrics
+
+
 def load_model(
     model_path: str,
     model_name: Optional[str],
@@ -51,7 +99,7 @@ def load_model(
             "retrain with the updated trainer."
         )
 
-    model = ABSAModel(resolved_model_name, num_labels)
+    model = ABSAModel(resolved_model_name, num_labels, load_pretrained=False)
     model.load_state_dict(checkpoint["model_state_dict"])
     model = model.to(device)
     model.eval()
@@ -92,6 +140,11 @@ def evaluate_detailed(
     metrics: Dict = {}
     if all_labels_array is not None:
         metrics = compute_metrics(all_predictions_array, all_labels_array, threshold)
+        metrics["per_label"] = compute_per_label_metrics(
+            all_predictions_array,
+            all_labels_array,
+            threshold,
+        )
 
     aspect_metrics = {}
     aspects = [
@@ -257,8 +310,8 @@ def main():
     checkpoint_config = checkpoint.get("config", {})
     max_length = args.max_length or checkpoint_config.get("max_length", 256)
     batch_size = args.batch_size or checkpoint_config.get("batch_size", 16)
-    threshold = args.threshold if args.threshold is not None else checkpoint.get("threshold", 0.5)
-    tokenizer_name = resolve_model_name(args.base_model_name) or checkpoint.get("model_name")
+    threshold = args.threshold if args.threshold is not None else checkpoint.get("best_threshold", checkpoint.get("threshold", 0.5))
+    tokenizer_name = resolve_tokenizer_source(checkpoint, str(args.model_path), args.base_model_name)
 
     if not tokenizer_name:
         raise ValueError("Tokenizer name could not be resolved for evaluation.")
@@ -274,8 +327,11 @@ def main():
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=0)
 
     metrics = evaluate_detailed(model, dataloader, val_df, device=device, threshold=threshold)
+    metrics["precision"] = metrics.get("micro_precision", 0.0)
+    metrics["recall"] = metrics.get("micro_recall", 0.0)
+    metrics["best_threshold"] = threshold
     metrics["threshold"] = threshold
-    metrics["model_name"] = tokenizer_name
+    metrics["model_name"] = checkpoint.get("model_name", tokenizer_name)
     save_validation_metrics(metrics, str(args.output_path))
     print(json.dumps(metrics, indent=2, ensure_ascii=False))
 

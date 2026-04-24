@@ -41,6 +41,21 @@ def resolve_model_name(model_name: Optional[str]) -> Optional[str]:
     return DEFAULT_MODELS.get(model_name, model_name)
 
 
+def resolve_tokenizer_source(checkpoint: Dict, model_path: str, fallback_model_name: Optional[str]) -> str:
+    """Resolve a local tokenizer directory first, then fall back to the model id."""
+    tokenizer_dir_name = checkpoint.get("tokenizer_dir_name")
+    if tokenizer_dir_name:
+        tokenizer_dir = Path(model_path).resolve().parent / tokenizer_dir_name
+        if tokenizer_dir.exists():
+            return str(tokenizer_dir)
+
+    return (
+        checkpoint.get("tokenizer_name")
+        or checkpoint.get("model_name")
+        or resolve_model_name(fallback_model_name)
+    )
+
+
 def predict(
     model: nn.Module,
     dataloader: DataLoader,
@@ -90,15 +105,20 @@ def load_trained_model(
             "retrain with the updated trainer."
         )
 
-    model = ABSAModel(resolved_base_model_name, len(ASPECT_SENTIMENT_LABELS))
+    model = ABSAModel(
+        resolved_base_model_name,
+        len(ASPECT_SENTIMENT_LABELS),
+        load_pretrained=False,
+    )
     model.load_state_dict(checkpoint["model_state_dict"])
     model = model.to(device)
     model.eval()
 
     metadata = {
         "config": checkpoint.get("config", {}),
-        "threshold": checkpoint.get("threshold", 0.5),
+        "threshold": checkpoint.get("best_threshold", checkpoint.get("threshold", 0.5)),
         "model_name": resolved_base_model_name,
+        "tokenizer_source": resolve_tokenizer_source(checkpoint, model_path, base_model_name),
     }
     return model, metadata
 
@@ -176,8 +196,9 @@ def run_prediction(
     resolved_max_length = checkpoint_config.get("max_length", 256) if max_length is None else max_length
     resolved_batch_size = checkpoint_config.get("batch_size", 16) if batch_size is None else batch_size
 
-    print(f"Loading tokenizer: {resolved_base_model_name}")
-    tokenizer = AutoTokenizer.from_pretrained(resolved_base_model_name)
+    tokenizer_source = metadata["tokenizer_source"]
+    print(f"Loading tokenizer: {tokenizer_source}")
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_source)
     preprocessor = ArabicPreprocessor()
 
     print("Creating test dataset...")

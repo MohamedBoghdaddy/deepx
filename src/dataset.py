@@ -49,11 +49,14 @@ def parse_json_column(value: Any) -> List[str]:
     Returns:
         List of strings
     """
-    if pd.isna(value):
-        return []
-    
     if isinstance(value, list):
         return value
+
+    if value is None:
+        return []
+
+    if pd.isna(value):
+        return []
     
     if isinstance(value, str):
         # Try to parse as JSON
@@ -89,11 +92,14 @@ def parse_sentiment_dict(value: Any) -> Dict[str, str]:
     Returns:
         Dictionary of aspect -> sentiment
     """
-    if pd.isna(value):
-        return {}
-    
     if isinstance(value, dict):
         return value
+
+    if value is None:
+        return {}
+
+    if pd.isna(value):
+        return {}
     
     if isinstance(value, str):
         # Try to parse as JSON
@@ -160,25 +166,31 @@ def decode_multi_label_vector(
     Returns:
         Tuple of (aspects list, sentiments dict)
     """
-    aspects = []
-    sentiments = {}
-    
-    # Get indices where prediction exceeds threshold
-    positive_indices = np.where(label_vector >= threshold)[0]
-    
-    for idx in positive_indices:
-        label = IDX_TO_LABEL[idx]
-        aspect, sentiment = label.rsplit('_', 1)
-        
-        if aspect not in aspects:
-            aspects.append(aspect)
-            sentiments[aspect] = sentiment
-    
-    # Handle case with no aspects detected
-    if not aspects:
-        aspects = ["none"]
-        sentiments = {"none": "neutral"}
-    
+    label_scores = np.asarray(label_vector, dtype=np.float32)
+    selected = {}
+
+    for aspect in VALID_ASPECTS:
+        best_sentiment = None
+        best_score = float("-inf")
+
+        for sentiment in VALID_SENTIMENTS:
+            label = f"{aspect}_{sentiment}"
+            score = float(label_scores[LABEL_TO_IDX[label]])
+            if score > best_score:
+                best_score = score
+                best_sentiment = sentiment
+
+        if best_sentiment is not None and best_score >= threshold:
+            selected[aspect] = best_sentiment
+
+    if "none" in selected and len(selected) > 1:
+        selected.pop("none", None)
+
+    if not selected:
+        return ["none"], {"none": "neutral"}
+
+    aspects = list(selected.keys())
+    sentiments = {aspect: sentiment for aspect, sentiment in selected.items()}
     return aspects, sentiments
 
 

@@ -19,14 +19,20 @@ from torch.utils.data import DataLoader
 from transformers import AutoConfig, AutoModel, AutoTokenizer, get_linear_schedule_with_warmup
 from tqdm import tqdm
 
-from dataset import ABDataset, ASPECT_SENTIMENT_LABELS
+from dataset import ABDataset, ASPECT_SENTIMENT_LABELS, IDX_TO_LABEL, LABEL_TO_IDX
 from preprocess import ArabicPreprocessor
 
 
 DEFAULT_MODELS = {
-    "marbert": "UBC-NLP/MARBERTv2",
+    "marbert": "UBC-NLP/MARBERT",
+    "marbertv2": "UBC-NLP/MARBERTv2",
     "arabert": "aubmindlab/bert-base-arabertv02",
     "arabertv3": "aubmindlab/bert-base-arabertv3",
+}
+
+MODEL_FAMILY_DEFAULTS = {
+    "arabert": DEFAULT_MODELS["arabert"],
+    "marbert": DEFAULT_MODELS["marbert"],
 }
 
 DEFAULT_CONFIG = {
@@ -34,6 +40,7 @@ DEFAULT_CONFIG = {
     "batch_size": 16,
     "learning_rate": 2e-5,
     "num_epochs": 3,
+    "early_stopping_patience": 2,
     "warmup_ratio": 0.1,
     "weight_decay": 0.01,
     "gradient_accumulation_steps": 1,
@@ -48,13 +55,43 @@ DEFAULT_VALIDATION_PATH = DATASET_ROOT / "DeepX_validation.xlsx"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "outputs"
 
 
+def resolve_model_name(model_name: Optional[str], model_family: Optional[str] = None) -> str:
+    """Resolve model aliases and family shortcuts to a concrete model id."""
+    if model_name:
+        return DEFAULT_MODELS.get(model_name, model_name)
+    if model_family in MODEL_FAMILY_DEFAULTS:
+        return MODEL_FAMILY_DEFAULTS[model_family]
+    if model_family == "custom":
+        raise ValueError("Provide --model_name when using --model_family custom.")
+    return DEFAULT_MODELS["marbert"]
+
+
+def infer_model_family(model_name: str) -> str:
+    """Infer the model family name for metadata and logs."""
+    model_name_lower = model_name.lower()
+    if "arabert" in model_name_lower:
+        return "arabert"
+    if "marbert" in model_name_lower:
+        return "marbert"
+    return "custom"
+
+
 class ABSAModel(nn.Module):
     """Multi-label classification model for Arabic ABSA."""
 
-    def __init__(self, model_name: str, num_labels: int, dropout: float = 0.1):
+    def __init__(
+        self,
+        model_name: str,
+        num_labels: int,
+        dropout: float = 0.1,
+        load_pretrained: bool = True,
+    ):
         super().__init__()
         self.config = AutoConfig.from_pretrained(model_name)
-        self.transformer = AutoModel.from_pretrained(model_name)
+        if load_pretrained:
+            self.transformer = AutoModel.from_pretrained(model_name)
+        else:
+            self.transformer = AutoModel.from_config(self.config)
         self.dropout = nn.Dropout(dropout)
         self.classifier = nn.Linear(self.config.hidden_size, num_labels)
         self.model_name = model_name
@@ -225,7 +262,7 @@ def train_model(
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    resolved_model_name = DEFAULT_MODELS.get(model_name, model_name)
+    resolved_model_name = resolve_model_name(model_name)
     print(f"Loading tokenizer: {resolved_model_name}")
     tokenizer = AutoTokenizer.from_pretrained(resolved_model_name)
     preprocessor = ArabicPreprocessor()
@@ -260,10 +297,36 @@ def train_model(
     print(f"Creating model: {resolved_model_name}")
     model = ABSAModel(resolved_model_name, len(ASPECT_SENTIMENT_LABELS)).to(device)
 
+    os.makedirs(output_dir, exist_ok=True)
+    tokenizer_dir = Path(output_dir) / "tokenizer"
+    tokenizer.save_pretrained(tokenizer_dir)
+    checkpoint_path = os.path.join(output_dir, "model.pt")
+
+    def save_checkpoint(metrics: Dict[str, float], threshold: float) -> None:
+        torch.save(
+            {
+                "model_state_dict": model.state_dict(),
+                "config": cfg,
+                "metrics": metrics,
+                "threshold": threshold,
+                "best_threshold": threshold,
+                "model_name": resolved_model_name,
+                "model_family": infer_model_family(resolved_model_name),
+                "tokenizer_name": resolved_model_name,
+                "tokenizer_dir_name": tokenizer_dir.name,
+                "transformer_config": model.config.to_dict(),
+                "label_names": ASPECT_SENTIMENT_LABELS,
+                "label_to_idx": LABEL_TO_IDX,
+                "idx_to_label": IDX_TO_LABEL,
+            },
+            checkpoint_path,
+        )
+
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=cfg["learning_rate"],
         weight_decay=cfg["weight_decay"],
+        foreach=False,
     )
 
     total_steps = max(
@@ -281,6 +344,7 @@ def train_model(
     best_f1 = -1.0
     best_model_state = None
     best_threshold = 0.5
+    epochs_without_improvement = 0
 
     for epoch in range(cfg["num_epochs"]):
         print(f"\n{'=' * 50}")
@@ -306,6 +370,7 @@ def train_model(
         print("\nTuning threshold...")
         best_epoch_f1 = -1.0
         best_epoch_threshold = 0.5
+        best_epoch_metrics: Dict[str, float] = {}
         if val_labels is None:
             raise ValueError("Validation labels were not available for threshold tuning.")
 
@@ -314,6 +379,7 @@ def train_model(
             if threshold_metrics["micro_f1"] > best_epoch_f1:
                 best_epoch_f1 = threshold_metrics["micro_f1"]
                 best_epoch_threshold = float(threshold)
+                best_epoch_metrics = threshold_metrics
 
         print(
             f"Best threshold for epoch: {best_epoch_threshold:.2f} "
@@ -324,7 +390,22 @@ def train_model(
             best_f1 = best_epoch_f1
             best_model_state = copy.deepcopy(model.state_dict())
             best_threshold = best_epoch_threshold
+            epochs_without_improvement = 0
+            save_checkpoint(best_epoch_metrics, best_threshold)
             print(f"New best model! F1: {best_f1:.4f}")
+            print(f"Saved best checkpoint to: {checkpoint_path}")
+        else:
+            epochs_without_improvement += 1
+            print(
+                "Validation Micro F1 did not improve "
+                f"for {epochs_without_improvement} consecutive epoch(s)."
+            )
+            if epochs_without_improvement >= cfg["early_stopping_patience"]:
+                print(
+                    "Early stopping triggered after "
+                    f"{epochs_without_improvement} consecutive non-improving epoch(s)."
+                )
+                break
 
     if best_model_state is not None:
         model.load_state_dict(best_model_state)
@@ -339,18 +420,7 @@ def train_model(
     print(f"Final Micro Recall: {final_metrics['micro_recall']:.4f}")
     print(f"Best Threshold: {best_threshold:.2f}")
 
-    os.makedirs(output_dir, exist_ok=True)
-    checkpoint_path = os.path.join(output_dir, "model.pt")
-    torch.save(
-        {
-            "model_state_dict": model.state_dict(),
-            "config": cfg,
-            "metrics": final_metrics,
-            "threshold": best_threshold,
-            "model_name": resolved_model_name,
-        },
-        checkpoint_path,
-    )
+    save_checkpoint(final_metrics, best_threshold)
     print(f"Model saved to: {checkpoint_path}")
 
     return model, final_metrics, best_threshold
@@ -361,9 +431,15 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Train the Arabic ABSA model.")
     parser.add_argument("--train_path", type=Path, default=DEFAULT_TRAIN_PATH)
     parser.add_argument("--validation_path", type=Path, default=DEFAULT_VALIDATION_PATH)
-    parser.add_argument("--model_name", default=DEFAULT_MODELS["marbert"])
-    parser.add_argument("--fallback_model_name", default=DEFAULT_MODELS["arabert"])
+    parser.add_argument("--model_name", default=None)
+    parser.add_argument("--model_family", choices=["arabert", "marbert", "custom"], default="marbert")
+    parser.add_argument("--fallback_model_name", default=None)
     parser.add_argument("--epochs", type=int, default=DEFAULT_CONFIG["num_epochs"])
+    parser.add_argument(
+        "--early_stopping_patience",
+        type=int,
+        default=DEFAULT_CONFIG["early_stopping_patience"],
+    )
     parser.add_argument("--batch_size", type=int, default=DEFAULT_CONFIG["batch_size"])
     parser.add_argument("--max_length", type=int, default=DEFAULT_CONFIG["max_length"])
     parser.add_argument("--learning_rate", type=float, default=DEFAULT_CONFIG["learning_rate"])
@@ -405,9 +481,16 @@ def run_from_args(args: argparse.Namespace) -> Tuple[Dict[str, float], float, st
     """Load data and run training from parsed CLI arguments."""
     train_df = pd.read_excel(args.train_path)
     val_df = pd.read_excel(args.validation_path)
+    primary_model_name = resolve_model_name(args.model_name, args.model_family)
+    fallback_model_name = (
+        resolve_model_name(args.fallback_model_name)
+        if args.fallback_model_name
+        else DEFAULT_MODELS["arabert"] if infer_model_family(primary_model_name) == "marbert" else None
+    )
 
     config = {
         "num_epochs": args.epochs,
+        "early_stopping_patience": args.early_stopping_patience,
         "batch_size": args.batch_size,
         "max_length": args.max_length,
         "learning_rate": args.learning_rate,
@@ -418,9 +501,9 @@ def run_from_args(args: argparse.Namespace) -> Tuple[Dict[str, float], float, st
         "seed": args.seed,
     }
 
-    model_candidates = [args.model_name]
-    if args.fallback_model_name and args.fallback_model_name != args.model_name:
-        model_candidates.append(args.fallback_model_name)
+    model_candidates = [primary_model_name]
+    if fallback_model_name and fallback_model_name != primary_model_name:
+        model_candidates.append(fallback_model_name)
 
     last_error: Optional[Exception] = None
     for index, candidate in enumerate(model_candidates):
@@ -452,7 +535,7 @@ def main():
     args = build_arg_parser().parse_args()
     metrics, threshold, model_name = run_from_args(args)
     print(f"Training completed with model: {model_name}")
-    print(json.dumps({"threshold": threshold, "metrics": metrics}, indent=2))
+    print(json.dumps({"best_threshold": threshold, "metrics": metrics}, indent=2))
 
 
 if __name__ == "__main__":
