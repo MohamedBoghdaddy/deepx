@@ -85,9 +85,18 @@ class ABSAModel(nn.Module):
         num_labels: int,
         dropout: float = 0.1,
         load_pretrained: bool = True,
+        config_dict: Optional[Dict[str, Any]] = None,
     ):
         super().__init__()
-        self.config = AutoConfig.from_pretrained(model_name)
+        if config_dict:
+            config_kwargs = dict(config_dict)
+            model_type = config_kwargs.pop("model_type", None)
+            if model_type:
+                self.config = AutoConfig.for_model(model_type, **config_kwargs)
+            else:
+                self.config = AutoConfig.from_pretrained(model_name)
+        else:
+            self.config = AutoConfig.from_pretrained(model_name)
         if load_pretrained:
             self.transformer = AutoModel.from_pretrained(model_name)
         else:

@@ -97,7 +97,10 @@ def load_trained_model(
     device: torch.device = torch.device("cpu"),
 ) -> Tuple[ABSAModel, Dict]:
     """Load a trained model from checkpoint."""
-    checkpoint = torch.load(model_path, map_location=device)
+    try:
+        checkpoint = torch.load(model_path, map_location=device, weights_only=False)
+    except TypeError:
+        checkpoint = torch.load(model_path, map_location=device)
     resolved_base_model_name = resolve_model_name(base_model_name) or checkpoint.get("model_name")
     if not resolved_base_model_name:
         raise ValueError(
@@ -109,6 +112,7 @@ def load_trained_model(
         resolved_base_model_name,
         len(ASPECT_SENTIMENT_LABELS),
         load_pretrained=False,
+        config_dict=checkpoint.get("transformer_config"),
     )
     model.load_state_dict(checkpoint["model_state_dict"])
     model = model.to(device)
