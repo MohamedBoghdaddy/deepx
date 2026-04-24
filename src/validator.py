@@ -265,12 +265,14 @@ def resolve_input_path(path_str: Optional[str], default_path: Optional[Path] = N
 def build_arg_parser() -> argparse.ArgumentParser:
     """Build the CLI parser for submission validation."""
     parser = argparse.ArgumentParser(description="Validate a DeepX submission JSON file.")
-    parser.add_argument("submission_path")
+    parser.add_argument("submission_path", nargs="?")
     parser.add_argument(
         "sample_submission_path",
         nargs="?",
         default=str(DEFAULT_SAMPLE_SUBMISSION_PATH),
     )
+    parser.add_argument("--submission_path", dest="submission_path_flag")
+    parser.add_argument("--sample_submission_path", dest="sample_submission_path_flag", default=None)
     parser.add_argument("--test_path", default=str(DEFAULT_TEST_PATH))
     parser.add_argument("--skip_review_ids", action="store_true")
     return parser
@@ -279,9 +281,15 @@ def build_arg_parser() -> argparse.ArgumentParser:
 def main():
     """CLI entry point."""
     args = build_arg_parser().parse_args()
-    submission_path = resolve_input_path(args.submission_path)
+    submission_arg = args.submission_path_flag or args.submission_path
+    if not submission_arg:
+        raise SystemExit("submission_path is required")
+
+    sample_submission_arg = args.sample_submission_path_flag or args.sample_submission_path
+
+    submission_path = resolve_input_path(submission_arg)
     sample_submission_path = resolve_input_path(
-        args.sample_submission_path,
+        sample_submission_arg,
         DEFAULT_SAMPLE_SUBMISSION_PATH,
     )
     test_path = resolve_input_path(args.test_path, DEFAULT_TEST_PATH)

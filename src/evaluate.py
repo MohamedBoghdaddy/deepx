@@ -109,6 +109,22 @@ def resolve_label_names(checkpoint: Dict) -> List[str]:
     return list(ASPECT_SENTIMENT_LABELS)
 
 
+def resolve_input_path(path: Optional[Path], default_path: Optional[Path] = None) -> Optional[Path]:
+    """Resolve CLI paths against common project locations."""
+    if path is None:
+        return default_path
+
+    if path.is_absolute():
+        return path
+
+    candidates = [path, PROJECT_ROOT / path, DATASET_ROOT / path]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate.resolve()
+
+    return (PROJECT_ROOT / path).resolve()
+
+
 def to_label_to_idx(label_names: Sequence[str]) -> Dict[str, int]:
     """Create a label-to-index mapping from an ordered label list."""
     return {label: index for index, label in enumerate(label_names)}
@@ -1064,10 +1080,11 @@ def evaluate_simple(
 def build_arg_parser() -> argparse.ArgumentParser:
     """Build the CLI parser for evaluation."""
     parser = argparse.ArgumentParser(description="Evaluate a trained Arabic ABSA model.")
-    parser.add_argument("--validation_path", type=Path, default=DEFAULT_VALIDATION_PATH)
-    parser.add_argument("--model_path", type=Path, default=DEFAULT_MODEL_PATH)
+    parser.add_argument("--validation_path", type=Path, default=None)
+    parser.add_argument("--model_dir", type=Path, default=None)
+    parser.add_argument("--model_path", type=Path, default=None)
     parser.add_argument("--base_model_name", default=None)
-    parser.add_argument("--output_path", type=Path, default=DEFAULT_OUTPUT_PATH)
+    parser.add_argument("--output_path", type=Path, default=None)
     parser.add_argument("--batch_size", type=int, default=None)
     parser.add_argument("--max_length", type=int, default=None)
     parser.add_argument("--threshold", type=float, default=None)
@@ -1077,13 +1094,23 @@ def build_arg_parser() -> argparse.ArgumentParser:
 def main() -> None:
     """CLI entry point."""
     args = build_arg_parser().parse_args()
+    validation_path = resolve_input_path(args.validation_path, DEFAULT_VALIDATION_PATH)
+    model_dir = resolve_input_path(args.model_dir)
+    model_path = resolve_input_path(args.model_path)
+    if model_path is None:
+        model_path = (model_dir / "model.pt") if model_dir is not None else DEFAULT_MODEL_PATH
+    output_path = resolve_input_path(args.output_path)
+    if output_path is None:
+        output_path = (
+            model_dir / "validation_metrics.json" if model_dir is not None else DEFAULT_OUTPUT_PATH
+        )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    val_df = pd.read_excel(args.validation_path)
+    val_df = pd.read_excel(validation_path)
     model, checkpoint = load_model(
-        str(args.model_path),
+        str(model_path),
         args.base_model_name,
         len(ASPECT_SENTIMENT_LABELS),
         device,
@@ -1098,7 +1125,7 @@ def main() -> None:
         if args.threshold is not None
         else checkpoint.get("best_threshold", checkpoint.get("threshold", 0.5))
     )
-    tokenizer_name = resolve_tokenizer_source(checkpoint, str(args.model_path), args.base_model_name)
+    tokenizer_name = resolve_tokenizer_source(checkpoint, str(model_path), args.base_model_name)
 
     if not tokenizer_name:
         raise ValueError("Tokenizer name could not be resolved for evaluation.")
@@ -1132,14 +1159,14 @@ def main() -> None:
     metrics["model_name"] = checkpoint.get("model_name", tokenizer_name)
     metrics["label_names"] = label_names
 
-    output_dir = args.output_path.parent
+    output_dir = output_path.parent
     per_class_metrics_path = output_dir / "per_class_metrics.json"
     error_analysis_path = output_dir / "error_analysis.json"
     evaluation_report_path = output_dir / "evaluation_report.md"
 
     report_markdown = generate_evaluation_report(metrics, per_class_metrics, error_analysis)
 
-    save_validation_metrics(metrics, str(args.output_path))
+    save_validation_metrics(metrics, str(output_path))
     save_json(per_class_metrics, per_class_metrics_path)
     save_json(error_analysis, error_analysis_path)
     save_text(report_markdown, evaluation_report_path)
@@ -1148,7 +1175,7 @@ def main() -> None:
         metrics,
         per_class_metrics,
         {
-            "validation_metrics": args.output_path,
+            "validation_metrics": output_path,
             "per_class_metrics": per_class_metrics_path,
             "error_analysis": error_analysis_path,
             "evaluation_report": evaluation_report_path,

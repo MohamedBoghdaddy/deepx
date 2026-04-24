@@ -56,6 +56,22 @@ def resolve_tokenizer_source(checkpoint: Dict, model_path: str, fallback_model_n
     )
 
 
+def resolve_input_path(path: Optional[Path], default_path: Optional[Path] = None) -> Optional[Path]:
+    """Resolve CLI paths against common project locations."""
+    if path is None:
+        return default_path
+
+    if path.is_absolute():
+        return path
+
+    candidates = [path, PROJECT_ROOT / path, DATASET_ROOT / path]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate.resolve()
+
+    return (PROJECT_ROOT / path).resolve()
+
+
 def predict(
     model: nn.Module,
     dataloader: DataLoader,
@@ -231,10 +247,11 @@ def run_prediction(
 def build_arg_parser() -> argparse.ArgumentParser:
     """Build the CLI parser for prediction."""
     parser = argparse.ArgumentParser(description="Run prediction for the Arabic ABSA model.")
-    parser.add_argument("--test_path", type=Path, default=DEFAULT_TEST_PATH)
-    parser.add_argument("--model_path", type=Path, default=DEFAULT_MODEL_PATH)
+    parser.add_argument("--test_path", type=Path, default=None)
+    parser.add_argument("--model_dir", type=Path, default=None)
+    parser.add_argument("--model_path", type=Path, default=None)
     parser.add_argument("--base_model_name", default=None)
-    parser.add_argument("--output_path", type=Path, default=DEFAULT_OUTPUT_PATH)
+    parser.add_argument("--output_path", type=Path, default=None)
     parser.add_argument("--threshold", type=float, default=None)
     parser.add_argument("--max_length", type=int, default=None)
     parser.add_argument("--batch_size", type=int, default=None)
@@ -244,12 +261,19 @@ def build_arg_parser() -> argparse.ArgumentParser:
 def main():
     """CLI entry point."""
     args = build_arg_parser().parse_args()
-    test_df = pd.read_excel(args.test_path)
+    test_path = resolve_input_path(args.test_path, DEFAULT_TEST_PATH)
+    model_dir = resolve_input_path(args.model_dir)
+    model_path = resolve_input_path(args.model_path)
+    if model_path is None:
+        model_path = (model_dir / "model.pt") if model_dir is not None else DEFAULT_MODEL_PATH
+    output_path = resolve_input_path(args.output_path, DEFAULT_OUTPUT_PATH)
+
+    test_df = pd.read_excel(test_path)
     predictions = run_prediction(
         test_df=test_df,
-        model_path=str(args.model_path),
+        model_path=str(model_path),
         base_model_name=args.base_model_name,
-        output_path=str(args.output_path),
+        output_path=str(output_path),
         threshold=args.threshold,
         max_length=args.max_length,
         batch_size=args.batch_size,
