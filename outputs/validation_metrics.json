@@ -1,0 +1,270 @@
+{
+  "micro_precision": 0.7601078167115903,
+  "micro_recall": 0.6714285714285714,
+  "micro_f1": 0.7130214917825537,
+  "macro_precision": 0.36430855218692537,
+  "macro_recall": 0.2999480926465481,
+  "macro_f1": 0.3099321254233697,
+  "subset_accuracy": 0.438,
+  "per_label": {
+    "food_positive": {
+      "precision": 0.6666666666666666,
+      "recall": 0.8301886792452831,
+      "f1": 0.7394957983193277,
+      "support": 53,
+      "predicted_count": 66
+    },
+    "food_negative": {
+      "precision": 0.6888888888888889,
+      "recall": 0.775,
+      "f1": 0.7294117647058822,
+      "support": 40,
+      "predicted_count": 45
+    },
+    "food_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 9,
+      "predicted_count": 0
+    },
+    "service_positive": {
+      "precision": 0.8614457831325302,
+      "recall": 0.9470198675496688,
+      "f1": 0.9022082018927445,
+      "support": 151,
+      "predicted_count": 166
+    },
+    "service_negative": {
+      "precision": 0.7864077669902912,
+      "recall": 0.7941176470588235,
+      "f1": 0.7902439024390243,
+      "support": 102,
+      "predicted_count": 103
+    },
+    "service_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0,
+      "predicted_count": 0
+    },
+    "price_positive": {
+      "precision": 0.6666666666666666,
+      "recall": 0.2222222222222222,
+      "f1": 0.3333333333333333,
+      "support": 18,
+      "predicted_count": 6
+    },
+    "price_negative": {
+      "precision": 0.7959183673469388,
+      "recall": 0.65,
+      "f1": 0.7155963302752293,
+      "support": 60,
+      "predicted_count": 49
+    },
+    "price_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 2,
+      "predicted_count": 0
+    },
+    "cleanliness_positive": {
+      "precision": 0.5217391304347826,
+      "recall": 0.34285714285714286,
+      "f1": 0.4137931034482759,
+      "support": 35,
+      "predicted_count": 23
+    },
+    "cleanliness_negative": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 16,
+      "predicted_count": 1
+    },
+    "cleanliness_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0,
+      "predicted_count": 0
+    },
+    "delivery_positive": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 6,
+      "predicted_count": 0
+    },
+    "delivery_negative": {
+      "precision": 0.8181818181818182,
+      "recall": 0.21951219512195122,
+      "f1": 0.34615384615384615,
+      "support": 41,
+      "predicted_count": 11
+    },
+    "delivery_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 1,
+      "predicted_count": 0
+    },
+    "ambiance_positive": {
+      "precision": 0.6666666666666666,
+      "recall": 0.8,
+      "f1": 0.7272727272727272,
+      "support": 75,
+      "predicted_count": 90
+    },
+    "ambiance_negative": {
+      "precision": 1.0,
+      "recall": 0.2608695652173913,
+      "f1": 0.41379310344827586,
+      "support": 23,
+      "predicted_count": 6
+    },
+    "ambiance_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 2,
+      "predicted_count": 0
+    },
+    "app_experience_positive": {
+      "precision": 0.8461538461538461,
+      "recall": 0.5238095238095238,
+      "f1": 0.6470588235294118,
+      "support": 42,
+      "predicted_count": 26
+    },
+    "app_experience_negative": {
+      "precision": 0.7272727272727273,
+      "recall": 0.9552238805970149,
+      "f1": 0.8258064516129033,
+      "support": 67,
+      "predicted_count": 88
+    },
+    "app_experience_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 11,
+      "predicted_count": 0
+    },
+    "general_positive": {
+      "precision": 0.7903225806451613,
+      "recall": 0.7777777777777778,
+      "f1": 0.7839999999999999,
+      "support": 63,
+      "predicted_count": 62
+    },
+    "general_negative": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 8,
+      "predicted_count": 0
+    },
+    "general_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 3,
+      "predicted_count": 0
+    },
+    "none_positive": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0,
+      "predicted_count": 0
+    },
+    "none_negative": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0,
+      "predicted_count": 0
+    },
+    "none_neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 12,
+      "predicted_count": 0
+    }
+  },
+  "per_aspect": {
+    "food": {
+      "precision": 0.6756756756756757,
+      "recall": 0.7352941176470589,
+      "f1": 0.7042253521126761,
+      "predicted_count": 111,
+      "true_count": 102
+    },
+    "service": {
+      "precision": 0.8327137546468402,
+      "recall": 0.8853754940711462,
+      "f1": 0.8582375478927203,
+      "predicted_count": 269,
+      "true_count": 253
+    },
+    "price": {
+      "precision": 0.7818181818181819,
+      "recall": 0.5375,
+      "f1": 0.6370370370370371,
+      "predicted_count": 55,
+      "true_count": 80
+    },
+    "cleanliness": {
+      "precision": 0.5,
+      "recall": 0.23529411764705882,
+      "f1": 0.31999999999999995,
+      "predicted_count": 24,
+      "true_count": 51
+    },
+    "delivery": {
+      "precision": 0.8181818181818182,
+      "recall": 0.1875,
+      "f1": 0.30508474576271183,
+      "predicted_count": 11,
+      "true_count": 48
+    },
+    "ambiance": {
+      "precision": 0.6875,
+      "recall": 0.66,
+      "f1": 0.673469387755102,
+      "predicted_count": 96,
+      "true_count": 100
+    },
+    "app_experience": {
+      "precision": 0.7543859649122807,
+      "recall": 0.7166666666666667,
+      "f1": 0.735042735042735,
+      "predicted_count": 114,
+      "true_count": 120
+    },
+    "general": {
+      "precision": 0.7903225806451613,
+      "recall": 0.6621621621621622,
+      "f1": 0.7205882352941176,
+      "predicted_count": 62,
+      "true_count": 74
+    },
+    "none": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "predicted_count": 0,
+      "true_count": 12
+    }
+  },
+  "precision": 0.7601078167115903,
+  "recall": 0.6714285714285714,
+  "best_threshold": 0.3500000000000001,
+  "threshold": 0.3500000000000001,
+  "model_name": "aubmindlab/bert-base-arabertv02"
+}
