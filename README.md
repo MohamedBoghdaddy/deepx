@@ -1,6 +1,6 @@
 # Arabic Aspect-Based Sentiment Analysis (ABSA)
 
-An Arabic ABSA pipeline for multi-label aspect and sentiment prediction on review data.
+A production-oriented Arabic ABSA pipeline for multi-label aspect and sentiment prediction on review data, now refined for multilingual competition inputs including Arabic, English, French, Italian, Franco-Arabic, and emoji-heavy text.
 
 ## Overview
 
@@ -8,9 +8,11 @@ An Arabic ABSA pipeline for multi-label aspect and sentiment prediction on revie
 - Loss: `BCEWithLogitsLoss`
 - Primary metrics: micro F1 and macro F1
 - Output: competition-ready `submission.json`
+- Multilingual preprocessing: language detection, Franco-Arabic normalization, and emoji sentiment preservation
 
 Supported model families:
 
+- XLM-R: recommended default for mixed-language competition data
 - AraBERT: stronger for Modern Standard Arabic and cleaner text
 - MARBERT: better for dialect, social media, and informal Arabic
 
@@ -48,16 +50,31 @@ Transformer preprocessing is intentionally light and safe:
 - remove tatweel
 - remove URLs and mentions
 - keep hashtags as text
-- keep emojis when possible
+- convert key emojis into `EMO_POS`, `EMO_NEG`, and `EMO_NEU`
+- detect language with `lingua-language-detector`
+- normalize Franco-Arabic phrases into Arabic script when Franco density is high
 - do not remove stopwords
 - do not apply stemming
 - avoid aggressive punctuation stripping
+
+Generate the Franco-Arabic seed lexicon:
+
+```bash
+python src/generate_franco_seed.py
+```
+
+Preprocess the train, validation, and unlabeled datasets into `data/processed/`:
+
+```bash
+python src/preprocess_data.py
+```
 
 ## Training
 
 Train by explicit model name:
 
 ```bash
+python src/train.py --model_name xlm-roberta-base --epochs 1
 python src/train.py --model_name aubmindlab/bert-base-arabertv02 --epochs 1
 python src/train.py --model_name UBC-NLP/MARBERT --epochs 1
 ```
@@ -98,17 +115,15 @@ Evaluate a saved checkpoint:
 ```bash
 python src/evaluate.py --model_path outputs/arabert_smoke/model.pt
 python src/evaluate.py --model_path outputs/marbert_smoke/model.pt
+python src/evaluate.py --model_path outputs/model.pt --test_file ../dataset/DeepX_validation.xlsx --output_dir outputs
 ```
 
-This writes `outputs/validation_metrics.json` with:
+This writes:
 
-- `micro_f1`
-- `macro_f1`
-- `precision`
-- `recall`
-- `best_threshold`
-- `per_label`
-- `per_aspect`
+- `outputs/validation_metrics.json`
+- `outputs/per_class_metrics.json`
+- `outputs/error_analysis.json`
+- `outputs/evaluation_report.md`
 
 ## Prediction
 

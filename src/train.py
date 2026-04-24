@@ -26,6 +26,7 @@ from dataset import (
     DATASET_ROOT,
     DEFAULT_TRAIN_PATH,
     DEFAULT_VALIDATION_PATH,
+    IDX_TO_LABEL,
     LABEL_TO_IDX,
     OUTPUTS_ROOT,
     build_pos_weight_tensor,
@@ -34,10 +35,14 @@ from dataset import (
     load_dataframe,
     resolve_input_path,
 )
-from preprocess import ArabicPreprocessor
+from preprocess import ArabicPreprocessor, PRIMARY_ABSA_MODEL_NAME
 
 
 DEFAULT_MODELS = {
+    "xlmr": PRIMARY_ABSA_MODEL_NAME,
+    "xlm-roberta": PRIMARY_ABSA_MODEL_NAME,
+    "xlm-roberta-base": PRIMARY_ABSA_MODEL_NAME,
+    "xlm-roberta-large": "xlm-roberta-large",
     "marbert": "UBC-NLP/MARBERT",
     "marbertv2": "UBC-NLP/MARBERTv2",
     "arabert": "aubmindlab/bert-base-arabertv02",
@@ -85,13 +90,15 @@ def save_json(data: Mapping[str, Any], output_path: Path) -> None:
 def resolve_model_name(model_name: Optional[str]) -> str:
     """Resolve model aliases to a concrete Hugging Face identifier."""
     if not model_name:
-        return DEFAULT_MODELS["marbertv2"]
+        return DEFAULT_MODELS["xlmr"]
     return DEFAULT_MODELS.get(model_name, model_name)
 
 
 def infer_model_family(model_name: str) -> str:
     """Infer a short model family tag for metadata and ensemble discovery."""
     lowered = model_name.lower()
+    if "xlm-roberta" in lowered:
+        return "xlm-roberta"
     if "marbert" in lowered:
         return "marbert"
     if "arabert" in lowered:
@@ -200,6 +207,59 @@ class ABSAModel(nn.Module):
         pooled_output = outputs.last_hidden_state[:, 0, :]
         pooled_output = self.dropout(pooled_output)
         return self.classifier(pooled_output)
+
+
+def write_label_mapping(
+    output_dir: Path,
+    label_names: Sequence[str] = ASPECT_SENTIMENT_LABELS,
+) -> Path:
+    """Save label metadata alongside a checkpoint for downstream evaluation."""
+    output_path = output_dir / "label_mapping.json"
+    save_json(
+        {
+            "label_names": list(label_names),
+            "label_to_idx": {label: index for index, label in enumerate(label_names)},
+            "idx_to_label": {str(index): label for index, label in enumerate(label_names)},
+        },
+        output_path,
+    )
+    return output_path
+
+
+def load_absa_model(
+    checkpoint_path: Optional[Path] = None,
+    model_name: Optional[str] = None,
+    device: Optional[torch.device] = None,
+) -> ABSAModel:
+    """Load a fine-tuned multilingual ABSA model checkpoint for inference."""
+    if checkpoint_path is None:
+        raise NotImplementedError(
+            "A fine-tuned ABSA checkpoint is required. Train the model first, then pass "
+            "the resulting checkpoint path to load_absa_model()."
+        )
+
+    resolved_checkpoint = resolve_input_path(checkpoint_path, checkpoint_path) or checkpoint_path
+    if not resolved_checkpoint.exists():
+        raise FileNotFoundError(f"Checkpoint does not exist: {resolved_checkpoint}")
+
+    resolved_device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    try:
+        checkpoint = torch.load(resolved_checkpoint, map_location=resolved_device, weights_only=False)
+    except TypeError:  # pragma: no cover - compatibility path
+        checkpoint = torch.load(resolved_checkpoint, map_location=resolved_device)
+
+    resolved_model_name = resolve_model_name(model_name or checkpoint.get("model_name"))
+    model = ABSAModel(
+        resolved_model_name,
+        num_labels=len(ASPECT_SENTIMENT_LABELS),
+        dropout=float(checkpoint.get("config", {}).get("dropout", DEFAULT_CONFIG["dropout"])),
+        load_pretrained=False,
+        config_dict=checkpoint.get("transformer_config"),
+    )
+    model.load_state_dict(checkpoint["model_state_dict"])
+    model = model.to(resolved_device)
+    model.eval()
+    return model
 
 
 def train_epoch(
@@ -348,6 +408,7 @@ def save_checkpoint(
             "config": dict(config),
             "metrics": dict(metrics),
             "best_threshold": float(threshold),
+            "threshold": float(threshold),
             "threshold_history": dict(threshold_history),
             "model_name": model.model_name,
             "model_family": infer_model_family(model.model_name),
@@ -356,6 +417,7 @@ def save_checkpoint(
             "transformer_config": model.config.to_dict(),
             "label_names": ASPECT_SENTIMENT_LABELS,
             "label_to_idx": LABEL_TO_IDX,
+            "idx_to_label": IDX_TO_LABEL,
             "class_distribution": dict(class_distribution),
         },
         checkpoint_path,
@@ -399,6 +461,7 @@ def train_model(
     output_dir.mkdir(parents=True, exist_ok=True)
     tokenizer_dir = output_dir / "tokenizer"
     tokenizer.save_pretrained(tokenizer_dir)
+    write_label_mapping(output_dir)
 
     class_distribution = compute_class_distribution(train_df)
     save_json(class_distribution, output_dir / "class_distribution.json")
@@ -510,7 +573,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Train the Arabic ABSA model.")
     parser.add_argument("--train_path", type=Path, default=DEFAULT_TRAIN_PATH)
     parser.add_argument("--validation_path", type=Path, default=DEFAULT_VALIDATION_PATH)
-    parser.add_argument("--model_name", default=DEFAULT_MODELS["marbertv2"])
+    parser.add_argument("--model_name", default=DEFAULT_MODELS["xlmr"])
     parser.add_argument("--epochs", type=int, default=DEFAULT_CONFIG["num_epochs"])
     parser.add_argument("--batch_size", type=int, default=DEFAULT_CONFIG["batch_size"])
     parser.add_argument("--max_length", type=int, default=DEFAULT_CONFIG["max_length"])
