@@ -107,6 +107,21 @@ Checkpoints include:
 - label mapping
 - threshold config
 - training config
+- `training_manifest.pkl` for finished-run reuse checks
+- `training_state.pkl` for interrupted-run resume
+
+Run the full pipeline in one command:
+
+```bash
+python src/run_pipeline.py
+python src/run_pipeline.py --model_name aubmindlab/bert-base-arabertv02 --epochs 5 --output_dir outputs/arabert_auto
+```
+
+Pipeline behavior:
+
+- if a compatible finished training run exists, it skips training and goes straight to testing/prediction
+- if an interrupted `training_state.pkl` exists, it resumes training from the saved epoch
+- if neither exists, it trains from scratch and then runs testing/prediction
 
 ## Evaluation
 

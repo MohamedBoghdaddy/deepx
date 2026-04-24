@@ -5,9 +5,7 @@ Training pipeline for Arabic ABSA with class imbalance handling and pseudo label
 from __future__ import annotations
 
 import argparse
-import copy
 import json
-import os
 import pickle
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,7 +23,6 @@ from tqdm import tqdm
 from dataset import (
     ABDataset,
     ASPECT_SENTIMENT_LABELS,
-    DATASET_ROOT,
     DEFAULT_TRAIN_PATH,
     DEFAULT_VALIDATION_PATH,
     IDX_TO_LABEL,
@@ -69,7 +66,9 @@ DEFAULT_CONFIG = {
 DEFAULT_PSEUDO_LABEL_PATH = OUTPUTS_ROOT / "pseudo_labeled.json"
 DEFAULT_OUTPUT_DIR = OUTPUTS_ROOT
 TRAINING_MANIFEST_FILENAME = "training_manifest.pkl"
+TRAINING_STATE_FILENAME = "training_state.pkl"
 DEFAULT_TRAINING_MANIFEST_PATH = DEFAULT_OUTPUT_DIR / TRAINING_MANIFEST_FILENAME
+DEFAULT_TRAINING_STATE_PATH = DEFAULT_OUTPUT_DIR / TRAINING_STATE_FILENAME
 
 
 def str2bool(value: Any) -> bool:
@@ -140,6 +139,72 @@ def load_training_manifest(manifest_path: Path) -> Dict[str, Any]:
     return manifest
 
 
+def load_model_checkpoint_metadata(checkpoint_path: Path) -> Dict[str, Any]:
+    """Load saved checkpoint metadata without constructing the model."""
+    try:
+        checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    except TypeError:  # pragma: no cover - compatibility path
+        checkpoint = torch.load(checkpoint_path, map_location="cpu")
+    if not isinstance(checkpoint, dict):
+        raise ValueError(f"Checkpoint payload must be a dictionary: {checkpoint_path}")
+    return checkpoint
+
+
+def load_training_state(state_path: Path) -> Dict[str, Any]:
+    """Load an in-progress resumable training state from disk."""
+    try:
+        state = torch.load(state_path, map_location="cpu", weights_only=False)
+    except TypeError:  # pragma: no cover - compatibility path
+        state = torch.load(state_path, map_location="cpu")
+    if not isinstance(state, dict):
+        raise ValueError(f"Training state must be a dictionary: {state_path}")
+    return state
+
+
+def capture_random_state() -> Dict[str, Any]:
+    """Capture NumPy and Torch RNG state so resumed training stays reproducible."""
+    state: Dict[str, Any] = {
+        "numpy_rng_state": np.random.get_state(),
+        "torch_rng_state": torch.get_rng_state(),
+    }
+    if torch.cuda.is_available():
+        state["cuda_rng_state_all"] = torch.cuda.get_rng_state_all()
+    return state
+
+
+def restore_random_state(state: Mapping[str, Any]) -> None:
+    """Restore NumPy and Torch RNG state from a saved checkpoint."""
+    numpy_rng_state = state.get("numpy_rng_state")
+    if numpy_rng_state is not None:
+        np.random.set_state(numpy_rng_state)
+
+    torch_rng_state = state.get("torch_rng_state")
+    if torch_rng_state is not None:
+        torch.set_rng_state(torch_rng_state)
+
+    cuda_rng_state_all = state.get("cuda_rng_state_all")
+    if torch.cuda.is_available() and cuda_rng_state_all is not None:
+        torch.cuda.set_rng_state_all(cuda_rng_state_all)
+
+
+def move_optimizer_to_device(
+    optimizer: torch.optim.Optimizer,
+    device: torch.device,
+) -> None:
+    """Move optimizer state tensors onto the active device after resuming."""
+    for state in optimizer.state.values():
+        for key, value in state.items():
+            if isinstance(value, torch.Tensor):
+                state[key] = value.to(device)
+
+
+def cleanup_training_state(output_dir: Path) -> None:
+    """Remove the rolling resume state once training finishes cleanly."""
+    state_path = output_dir / TRAINING_STATE_FILENAME
+    if state_path.exists():
+        state_path.unlink()
+
+
 def save_training_manifest(
     output_dir: Path,
     checkpoint_path: Path,
@@ -179,6 +244,101 @@ def save_training_manifest(
     return manifest_path
 
 
+def save_training_state(
+    state_path: Path,
+    model: ABSAModel,
+    optimizer: torch.optim.Optimizer,
+    scheduler: Optional[Any],
+    model_name: str,
+    config: Mapping[str, Any],
+    checkpoint_path: Path,
+    train_path: Path,
+    validation_path: Path,
+    next_epoch: int,
+    best_f1: float,
+    best_threshold: float,
+    best_metrics: Mapping[str, Any],
+    best_threshold_history: Mapping[str, Any],
+    stagnant_epochs: int,
+    class_distribution: Mapping[str, Any],
+    use_pseudo_labels: bool = False,
+    pseudo_label_path: Optional[Path] = None,
+) -> Path:
+    """Persist rolling state needed to resume an interrupted training run."""
+    payload = {
+        "state_version": 1,
+        "saved_at_utc": datetime.now(timezone.utc).isoformat(),
+        "training_status": "in_progress",
+        "model_name": resolve_model_name(model_name),
+        "config": normalize_training_config(config),
+        "checkpoint_path": str(checkpoint_path.resolve()),
+        "train_signature": build_file_signature(train_path),
+        "validation_signature": build_file_signature(validation_path),
+        "use_pseudo_labels": bool(use_pseudo_labels),
+        "pseudo_label_signature": (
+            build_file_signature(pseudo_label_path) if use_pseudo_labels else None
+        ),
+        "next_epoch": int(next_epoch),
+        "best_f1": float(best_f1),
+        "best_threshold": float(best_threshold),
+        "best_metrics": dict(best_metrics),
+        "best_threshold_history": dict(best_threshold_history),
+        "stagnant_epochs": int(stagnant_epochs),
+        "class_distribution": dict(class_distribution),
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "scheduler_state_dict": scheduler.state_dict() if scheduler is not None else None,
+        **capture_random_state(),
+    }
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(payload, state_path)
+    return state_path
+
+
+def collect_training_artifact_mismatch_reasons(
+    artifact: Mapping[str, Any],
+    checkpoint_path: Path,
+    model_name: str,
+    config: Mapping[str, Any],
+    train_path: Path,
+    validation_path: Path,
+    use_pseudo_labels: bool = False,
+    pseudo_label_path: Optional[Path] = None,
+) -> List[str]:
+    """Collect compatibility blockers for saved manifests or resume states."""
+    reasons: List[str] = []
+    resolved_checkpoint_path = resolve_input_path(checkpoint_path, checkpoint_path) or checkpoint_path
+    if not resolved_checkpoint_path.exists():
+        reasons.append(f"Checkpoint not found at {resolved_checkpoint_path}.")
+
+    expected_model_name = resolve_model_name(model_name)
+    if str(artifact.get("model_name")) != expected_model_name:
+        reasons.append("Model name changed.")
+
+    saved_config = normalize_training_config(artifact.get("config", {}))
+    current_config = normalize_training_config(config)
+    if saved_config != current_config:
+        reasons.append("Training configuration changed.")
+
+    if artifact.get("train_signature") != build_file_signature(train_path):
+        reasons.append("Training dataset changed.")
+
+    if artifact.get("validation_signature") != build_file_signature(validation_path):
+        reasons.append("Validation dataset changed.")
+
+    saved_uses_pseudo_labels = bool(artifact.get("use_pseudo_labels", False))
+    if saved_uses_pseudo_labels != bool(use_pseudo_labels):
+        reasons.append("Pseudo-label usage changed.")
+    elif use_pseudo_labels and artifact.get("pseudo_label_signature") != build_file_signature(pseudo_label_path):
+        reasons.append("Pseudo-label dataset changed.")
+
+    saved_checkpoint_path = artifact.get("checkpoint_path")
+    if saved_checkpoint_path and Path(saved_checkpoint_path).resolve() != resolved_checkpoint_path.resolve():
+        reasons.append("Checkpoint path changed.")
+
+    return reasons
+
+
 def is_training_manifest_compatible(
     manifest: Mapping[str, Any],
     checkpoint_path: Path,
@@ -190,36 +350,40 @@ def is_training_manifest_compatible(
     pseudo_label_path: Optional[Path] = None,
 ) -> Tuple[bool, List[str]]:
     """Check whether saved training artifacts can be reused safely."""
-    reasons: List[str] = []
-    resolved_checkpoint_path = resolve_input_path(checkpoint_path, checkpoint_path) or checkpoint_path
-    if not resolved_checkpoint_path.exists():
-        reasons.append(f"Checkpoint not found at {resolved_checkpoint_path}.")
+    reasons = collect_training_artifact_mismatch_reasons(
+        artifact=manifest,
+        checkpoint_path=checkpoint_path,
+        model_name=model_name,
+        config=config,
+        train_path=train_path,
+        validation_path=validation_path,
+        use_pseudo_labels=use_pseudo_labels,
+        pseudo_label_path=pseudo_label_path,
+    )
+    return not reasons, reasons
 
-    expected_model_name = resolve_model_name(model_name)
-    if str(manifest.get("model_name")) != expected_model_name:
-        reasons.append("Model name changed.")
 
-    saved_config = normalize_training_config(manifest.get("config", {}))
-    current_config = normalize_training_config(config)
-    if saved_config != current_config:
-        reasons.append("Training configuration changed.")
-
-    if manifest.get("train_signature") != build_file_signature(train_path):
-        reasons.append("Training dataset changed.")
-
-    if manifest.get("validation_signature") != build_file_signature(validation_path):
-        reasons.append("Validation dataset changed.")
-
-    saved_uses_pseudo_labels = bool(manifest.get("use_pseudo_labels", False))
-    if saved_uses_pseudo_labels != bool(use_pseudo_labels):
-        reasons.append("Pseudo-label usage changed.")
-    elif use_pseudo_labels and manifest.get("pseudo_label_signature") != build_file_signature(pseudo_label_path):
-        reasons.append("Pseudo-label dataset changed.")
-
-    saved_checkpoint_path = manifest.get("checkpoint_path")
-    if saved_checkpoint_path and Path(saved_checkpoint_path).resolve() != resolved_checkpoint_path.resolve():
-        reasons.append("Checkpoint path changed.")
-
+def is_training_state_compatible(
+    training_state: Mapping[str, Any],
+    checkpoint_path: Path,
+    model_name: str,
+    config: Mapping[str, Any],
+    train_path: Path,
+    validation_path: Path,
+    use_pseudo_labels: bool = False,
+    pseudo_label_path: Optional[Path] = None,
+) -> Tuple[bool, List[str]]:
+    """Check whether an in-progress training state can be resumed safely."""
+    reasons = collect_training_artifact_mismatch_reasons(
+        artifact=training_state,
+        checkpoint_path=checkpoint_path,
+        model_name=model_name,
+        config=config,
+        train_path=train_path,
+        validation_path=validation_path,
+        use_pseudo_labels=use_pseudo_labels,
+        pseudo_label_path=pseudo_label_path,
+    )
     return not reasons, reasons
 
 
@@ -232,6 +396,7 @@ def ensure_trained_model(
     use_pseudo_labels: bool = False,
     pseudo_label_path: Optional[Path] = None,
     force_retrain: bool = False,
+    allow_checkpoint_fallback: bool = False,
 ) -> Dict[str, Any]:
     """Reuse compatible saved training artifacts or retrain from scratch."""
     resolved_train_path = resolve_input_path(train_path, DEFAULT_TRAIN_PATH) or DEFAULT_TRAIN_PATH
@@ -246,9 +411,11 @@ def ensure_trained_model(
     )
     checkpoint_path = resolved_output_dir / "model.pt"
     manifest_path = resolved_output_dir / TRAINING_MANIFEST_FILENAME
+    state_path = resolved_output_dir / TRAINING_STATE_FILENAME
     effective_config = normalize_training_config(config)
 
     retrain_reasons: List[str] = []
+    manifest_allows_checkpoint_fallback = not manifest_path.exists()
     if force_retrain:
         retrain_reasons.append("Force retrain requested.")
     elif manifest_path.exists():
@@ -256,6 +423,7 @@ def ensure_trained_model(
             manifest = load_training_manifest(manifest_path)
         except (OSError, pickle.PickleError, ValueError) as exc:
             retrain_reasons.append(f"Could not load training manifest: {exc}")
+            manifest_allows_checkpoint_fallback = True
         else:
             reusable, reuse_blockers = is_training_manifest_compatible(
                 manifest=manifest,
@@ -268,19 +436,44 @@ def ensure_trained_model(
                 pseudo_label_path=resolved_pseudo_label_path if use_pseudo_labels else None,
             )
             if reusable:
+                cleanup_training_state(resolved_output_dir)
                 return {
                     "reused_existing_training": True,
+                    "compatibility_verified": True,
                     "model_name": str(manifest.get("model_name", resolve_model_name(model_name))),
                     "checkpoint_path": str(checkpoint_path.resolve()),
                     "training_manifest_path": str(manifest_path.resolve()),
+                    "training_state_path": str(state_path.resolve()),
                     "best_threshold": float(manifest.get("best_threshold", 0.5)),
                     "metrics": dict(manifest.get("metrics", {})),
                     "config": dict(manifest.get("config", effective_config)),
                     "retrain_reasons": [],
                 }
             retrain_reasons.extend(reuse_blockers)
+            manifest_allows_checkpoint_fallback = False
     else:
         retrain_reasons.append(f"Training manifest not found at {manifest_path}.")
+
+    if (
+        not force_retrain
+        and allow_checkpoint_fallback
+        and manifest_allows_checkpoint_fallback
+        and checkpoint_path.exists()
+        and not state_path.exists()
+    ):
+        checkpoint_metadata = load_model_checkpoint_metadata(checkpoint_path)
+        return {
+            "reused_existing_training": True,
+            "compatibility_verified": False,
+            "model_name": str(checkpoint_metadata.get("model_name", resolve_model_name(model_name))),
+            "checkpoint_path": str(checkpoint_path.resolve()),
+            "training_manifest_path": str(manifest_path.resolve()) if manifest_path.exists() else None,
+            "training_state_path": str(state_path.resolve()),
+            "best_threshold": float(checkpoint_metadata.get("best_threshold", 0.5)),
+            "metrics": dict(checkpoint_metadata.get("metrics", {})),
+            "config": dict(checkpoint_metadata.get("config", effective_config)),
+            "retrain_reasons": retrain_reasons,
+        }
 
     train_df = load_dataframe(resolved_train_path)
     val_df = load_dataframe(resolved_validation_path)
@@ -299,6 +492,10 @@ def ensure_trained_model(
         model_name=model_name,
         config=effective_config,
         output_dir=resolved_output_dir,
+        train_path=resolved_train_path,
+        validation_path=resolved_validation_path,
+        use_pseudo_labels=use_pseudo_labels,
+        pseudo_label_path=resolved_pseudo_label_path if use_pseudo_labels else None,
     )
     del model
 
@@ -315,11 +512,14 @@ def ensure_trained_model(
         use_pseudo_labels=use_pseudo_labels,
         pseudo_label_path=resolved_pseudo_label_path if use_pseudo_labels else None,
     )
+    cleanup_training_state(resolved_output_dir)
     return {
         "reused_existing_training": False,
+        "compatibility_verified": True,
         "model_name": resolve_model_name(model_name),
         "checkpoint_path": str(checkpoint_path.resolve()),
         "training_manifest_path": str(manifest_path.resolve()),
+        "training_state_path": str(state_path.resolve()),
         "best_threshold": float(threshold),
         "metrics": metrics,
         "config": effective_config,
@@ -671,9 +871,14 @@ def train_model(
     model_name: str,
     config: Optional[Dict[str, Any]] = None,
     output_dir: Path = DEFAULT_OUTPUT_DIR,
+    train_path: Optional[Path] = None,
+    validation_path: Optional[Path] = None,
+    use_pseudo_labels: bool = False,
+    pseudo_label_path: Optional[Path] = None,
+    resume_from_state: bool = True,
 ) -> Tuple[ABSAModel, Dict[str, float], float]:
     """Train the model and save the best checkpoint."""
-    cfg = {**DEFAULT_CONFIG, **(config or {})}
+    cfg = normalize_training_config(config)
     set_seed(int(cfg["seed"]))
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -699,6 +904,8 @@ def train_model(
     val_loader = DataLoader(val_dataset, batch_size=int(cfg["batch_size"]), shuffle=False, num_workers=0)
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    checkpoint_path = output_dir / "model.pt"
+    state_path = output_dir / TRAINING_STATE_FILENAME
     tokenizer_dir = output_dir / "tokenizer"
     tokenizer.save_pretrained(tokenizer_dir)
     write_label_mapping(output_dir)
@@ -731,14 +938,79 @@ def train_model(
         num_training_steps=total_steps,
     )
 
+    resolved_train_path = resolve_input_path(train_path, train_path) if train_path is not None else None
+    resolved_validation_path = (
+        resolve_input_path(validation_path, validation_path)
+        if validation_path is not None
+        else None
+    )
+    resolved_pseudo_label_path = (
+        resolve_input_path(pseudo_label_path, pseudo_label_path)
+        if pseudo_label_path is not None
+        else None
+    )
+    resume_state_enabled = (
+        resume_from_state
+        and resolved_train_path is not None
+        and resolved_validation_path is not None
+    )
+
     best_f1 = -1.0
-    best_state_dict = None
     best_threshold = DEFAULT_CONFIG["seed"] * 0.0 + 0.5
     best_metrics: Dict[str, float] = {}
     best_threshold_history: Dict[str, Dict[str, float]] = {}
     stagnant_epochs = 0
+    start_epoch = 0
 
-    for epoch in range(int(cfg["num_epochs"])):
+    if resume_state_enabled and state_path.exists():
+        try:
+            training_state = load_training_state(state_path)
+        except (OSError, RuntimeError, ValueError, pickle.PickleError) as exc:
+            print(f"Could not load resume state from {state_path}: {exc}")
+        else:
+            reusable, blockers = is_training_state_compatible(
+                training_state=training_state,
+                checkpoint_path=checkpoint_path,
+                model_name=resolved_model_name,
+                config=cfg,
+                train_path=resolved_train_path,
+                validation_path=resolved_validation_path,
+                use_pseudo_labels=use_pseudo_labels,
+                pseudo_label_path=resolved_pseudo_label_path if use_pseudo_labels else None,
+            )
+            if reusable:
+                model.load_state_dict(training_state["model_state_dict"])
+                optimizer.load_state_dict(training_state["optimizer_state_dict"])
+                move_optimizer_to_device(optimizer, device)
+                scheduler_state_dict = training_state.get("scheduler_state_dict")
+                if scheduler_state_dict:
+                    scheduler.load_state_dict(scheduler_state_dict)
+                best_f1 = float(training_state.get("best_f1", -1.0))
+                best_threshold = float(training_state.get("best_threshold", 0.5))
+                best_metrics = dict(training_state.get("best_metrics", {}))
+                best_threshold_history = dict(training_state.get("best_threshold_history", {}))
+                stagnant_epochs = int(training_state.get("stagnant_epochs", 0))
+                start_epoch = int(training_state.get("next_epoch", 0))
+                restore_random_state(training_state)
+                print(
+                    f"Resuming training from epoch {start_epoch + 1}/{cfg['num_epochs']} "
+                    f"using {state_path}"
+                )
+            else:
+                print("Ignoring incompatible resume state:")
+                for blocker in blockers:
+                    print(f"- {blocker}")
+
+    if not resume_state_enabled and resume_from_state and state_path.exists():
+        print(
+            f"Resume state exists at {state_path}, but dataset paths were not provided. "
+            "Starting from scratch."
+        )
+
+    if start_epoch >= int(cfg["num_epochs"]):
+        print("Requested epoch count is already covered by the saved training state. Finalizing checkpoint.")
+
+    for epoch in range(start_epoch, int(cfg["num_epochs"])):
         print(f"\nEpoch {epoch + 1}/{cfg['num_epochs']}")
         train_loss, learning_rate = train_epoch(
             model=model,
@@ -764,7 +1036,6 @@ def train_model(
 
         if epoch_metrics["micro_f1"] > best_f1:
             best_f1 = epoch_metrics["micro_f1"]
-            best_state_dict = copy.deepcopy(model.state_dict())
             best_threshold = epoch_threshold
             best_metrics = dict(epoch_metrics)
             best_threshold_history = threshold_history
@@ -788,10 +1059,33 @@ def train_model(
             )
             if stagnant_epochs >= int(cfg["early_stopping_patience"]):
                 print("Early stopping triggered.")
-                break
+        if resume_state_enabled:
+            save_training_state(
+                state_path=state_path,
+                model=model,
+                optimizer=optimizer,
+                scheduler=scheduler,
+                model_name=resolved_model_name,
+                config=cfg,
+                checkpoint_path=checkpoint_path,
+                train_path=resolved_train_path,
+                validation_path=resolved_validation_path,
+                next_epoch=epoch + 1,
+                best_f1=best_f1,
+                best_threshold=best_threshold,
+                best_metrics=best_metrics,
+                best_threshold_history=best_threshold_history,
+                stagnant_epochs=stagnant_epochs,
+                class_distribution=class_distribution,
+                use_pseudo_labels=use_pseudo_labels,
+                pseudo_label_path=resolved_pseudo_label_path if use_pseudo_labels else None,
+            )
+        if stagnant_epochs >= int(cfg["early_stopping_patience"]):
+            break
 
-    if best_state_dict is not None:
-        model.load_state_dict(best_state_dict)
+    if checkpoint_path.exists():
+        checkpoint_metadata = load_model_checkpoint_metadata(checkpoint_path)
+        model.load_state_dict(checkpoint_metadata["model_state_dict"])
 
     final_metrics, _, _ = evaluate_model(model, val_loader, device=device, threshold=float(best_threshold))
     checkpoint_path = save_checkpoint(
@@ -804,6 +1098,7 @@ def train_model(
         threshold_history=best_threshold_history,
         class_distribution=class_distribution,
     )
+    cleanup_training_state(output_dir)
     print(f"Final checkpoint saved to {checkpoint_path}")
     return model, final_metrics, float(best_threshold)
 
@@ -828,6 +1123,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--use_pseudo_labels", type=str2bool, default=False)
     parser.add_argument("--pseudo_label_path", type=Path, default=DEFAULT_PSEUDO_LABEL_PATH)
     parser.add_argument("--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--force_retrain", type=str2bool, default=False)
+    parser.add_argument("--allow_checkpoint_fallback", type=str2bool, default=True)
     return parser
 
 
@@ -840,20 +1137,9 @@ def main() -> None:
     output_dir = resolve_input_path(args.output_dir, DEFAULT_OUTPUT_DIR) or DEFAULT_OUTPUT_DIR
     pseudo_label_path = resolve_input_path(args.pseudo_label_path, DEFAULT_PSEUDO_LABEL_PATH)
 
-    train_df = load_dataframe(train_path)
-    val_df = load_dataframe(validation_path)
-    if args.use_pseudo_labels:
-        if not pseudo_label_path or not pseudo_label_path.exists():
-            raise FileNotFoundError(
-                f"Pseudo-label path does not exist: {pseudo_label_path}"
-            )
-        pseudo_df = load_pseudo_label_dataframe(pseudo_label_path)
-        train_df = merge_pseudo_labels(train_df, pseudo_df)
-        print(f"Loaded {len(pseudo_df)} pseudo-labeled rows.")
-
-    model, metrics, threshold = train_model(
-        train_df=train_df,
-        val_df=val_df,
+    training_result = ensure_trained_model(
+        train_path=train_path,
+        validation_path=validation_path,
         model_name=args.model_name,
         config={
             "num_epochs": args.epochs,
@@ -869,14 +1155,15 @@ def main() -> None:
             "seed": args.seed,
         },
         output_dir=output_dir,
+        use_pseudo_labels=args.use_pseudo_labels,
+        pseudo_label_path=pseudo_label_path,
+        force_retrain=args.force_retrain,
+        allow_checkpoint_fallback=args.allow_checkpoint_fallback,
     )
-    del model
     print(
         json.dumps(
             {
-                "model_name": resolve_model_name(args.model_name),
-                "best_threshold": threshold,
-                "metrics": metrics,
+                **training_result,
                 "output_dir": str(output_dir),
             },
             ensure_ascii=False,
