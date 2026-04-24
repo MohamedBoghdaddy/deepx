@@ -8,6 +8,8 @@ import argparse
 import copy
 import json
 import os
+import pickle
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
@@ -66,6 +68,8 @@ DEFAULT_CONFIG = {
 
 DEFAULT_PSEUDO_LABEL_PATH = OUTPUTS_ROOT / "pseudo_labeled.json"
 DEFAULT_OUTPUT_DIR = OUTPUTS_ROOT
+TRAINING_MANIFEST_FILENAME = "training_manifest.pkl"
+DEFAULT_TRAINING_MANIFEST_PATH = DEFAULT_OUTPUT_DIR / TRAINING_MANIFEST_FILENAME
 
 
 def str2bool(value: Any) -> bool:
@@ -85,6 +89,242 @@ def save_json(data: Mapping[str, Any], output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, ensure_ascii=False, indent=2)
+
+
+def normalize_training_config(config: Optional[Mapping[str, Any]] = None) -> Dict[str, Any]:
+    """Normalize config types so saved manifests compare cleanly across CLI runs."""
+    normalized = dict(DEFAULT_CONFIG)
+    for key, value in dict(config or {}).items():
+        if key in DEFAULT_CONFIG:
+            default_value = DEFAULT_CONFIG[key]
+            if isinstance(default_value, bool):
+                normalized[key] = bool(value)
+            elif isinstance(default_value, int):
+                normalized[key] = int(value)
+            elif isinstance(default_value, float):
+                normalized[key] = float(value)
+            else:
+                normalized[key] = value
+        else:
+            normalized[key] = value
+    return normalized
+
+
+def build_file_signature(path: Optional[Path]) -> Optional[Dict[str, Any]]:
+    """Capture lightweight file metadata to detect training-data changes."""
+    if path is None:
+        return None
+
+    resolved_path = resolve_input_path(path, path) or path
+    if not resolved_path.exists():
+        return {
+            "path": str(resolved_path.resolve()),
+            "exists": False,
+        }
+
+    stat_result = resolved_path.stat()
+    return {
+        "path": str(resolved_path.resolve()),
+        "exists": True,
+        "size_bytes": int(stat_result.st_size),
+        "modified_time_ns": int(stat_result.st_mtime_ns),
+    }
+
+
+def load_training_manifest(manifest_path: Path) -> Dict[str, Any]:
+    """Load a saved training manifest from disk."""
+    with manifest_path.open("rb") as handle:
+        manifest = pickle.load(handle)
+    if not isinstance(manifest, dict):
+        raise ValueError(f"Training manifest must be a dictionary: {manifest_path}")
+    return manifest
+
+
+def save_training_manifest(
+    output_dir: Path,
+    checkpoint_path: Path,
+    model_name: str,
+    config: Mapping[str, Any],
+    metrics: Mapping[str, Any],
+    threshold: float,
+    train_path: Path,
+    validation_path: Path,
+    use_pseudo_labels: bool = False,
+    pseudo_label_path: Optional[Path] = None,
+) -> Path:
+    """Save reusable training metadata alongside the checkpoint."""
+    manifest_path = output_dir / TRAINING_MANIFEST_FILENAME
+    payload = {
+        "manifest_version": 1,
+        "saved_at_utc": datetime.now(timezone.utc).isoformat(),
+        "training_status": "completed",
+        "model_name": resolve_model_name(model_name),
+        "config": normalize_training_config(config),
+        "metrics": dict(metrics),
+        "best_threshold": float(threshold),
+        "checkpoint_path": str(checkpoint_path.resolve()),
+        "tokenizer_dir": str((output_dir / "tokenizer").resolve()),
+        "label_mapping_path": str((output_dir / "label_mapping.json").resolve()),
+        "class_distribution_path": str((output_dir / "class_distribution.json").resolve()),
+        "train_signature": build_file_signature(train_path),
+        "validation_signature": build_file_signature(validation_path),
+        "use_pseudo_labels": bool(use_pseudo_labels),
+        "pseudo_label_signature": (
+            build_file_signature(pseudo_label_path) if use_pseudo_labels else None
+        ),
+    }
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with manifest_path.open("wb") as handle:
+        pickle.dump(payload, handle)
+    return manifest_path
+
+
+def is_training_manifest_compatible(
+    manifest: Mapping[str, Any],
+    checkpoint_path: Path,
+    model_name: str,
+    config: Mapping[str, Any],
+    train_path: Path,
+    validation_path: Path,
+    use_pseudo_labels: bool = False,
+    pseudo_label_path: Optional[Path] = None,
+) -> Tuple[bool, List[str]]:
+    """Check whether saved training artifacts can be reused safely."""
+    reasons: List[str] = []
+    resolved_checkpoint_path = resolve_input_path(checkpoint_path, checkpoint_path) or checkpoint_path
+    if not resolved_checkpoint_path.exists():
+        reasons.append(f"Checkpoint not found at {resolved_checkpoint_path}.")
+
+    expected_model_name = resolve_model_name(model_name)
+    if str(manifest.get("model_name")) != expected_model_name:
+        reasons.append("Model name changed.")
+
+    saved_config = normalize_training_config(manifest.get("config", {}))
+    current_config = normalize_training_config(config)
+    if saved_config != current_config:
+        reasons.append("Training configuration changed.")
+
+    if manifest.get("train_signature") != build_file_signature(train_path):
+        reasons.append("Training dataset changed.")
+
+    if manifest.get("validation_signature") != build_file_signature(validation_path):
+        reasons.append("Validation dataset changed.")
+
+    saved_uses_pseudo_labels = bool(manifest.get("use_pseudo_labels", False))
+    if saved_uses_pseudo_labels != bool(use_pseudo_labels):
+        reasons.append("Pseudo-label usage changed.")
+    elif use_pseudo_labels and manifest.get("pseudo_label_signature") != build_file_signature(pseudo_label_path):
+        reasons.append("Pseudo-label dataset changed.")
+
+    saved_checkpoint_path = manifest.get("checkpoint_path")
+    if saved_checkpoint_path and Path(saved_checkpoint_path).resolve() != resolved_checkpoint_path.resolve():
+        reasons.append("Checkpoint path changed.")
+
+    return not reasons, reasons
+
+
+def ensure_trained_model(
+    train_path: Path = DEFAULT_TRAIN_PATH,
+    validation_path: Path = DEFAULT_VALIDATION_PATH,
+    model_name: str = DEFAULT_MODELS["xlmr"],
+    config: Optional[Dict[str, Any]] = None,
+    output_dir: Path = DEFAULT_OUTPUT_DIR,
+    use_pseudo_labels: bool = False,
+    pseudo_label_path: Optional[Path] = None,
+    force_retrain: bool = False,
+) -> Dict[str, Any]:
+    """Reuse compatible saved training artifacts or retrain from scratch."""
+    resolved_train_path = resolve_input_path(train_path, DEFAULT_TRAIN_PATH) or DEFAULT_TRAIN_PATH
+    resolved_validation_path = (
+        resolve_input_path(validation_path, DEFAULT_VALIDATION_PATH) or DEFAULT_VALIDATION_PATH
+    )
+    resolved_output_dir = resolve_input_path(output_dir, DEFAULT_OUTPUT_DIR) or DEFAULT_OUTPUT_DIR
+    resolved_pseudo_label_path = (
+        resolve_input_path(pseudo_label_path, DEFAULT_PSEUDO_LABEL_PATH)
+        if pseudo_label_path is not None
+        else DEFAULT_PSEUDO_LABEL_PATH
+    )
+    checkpoint_path = resolved_output_dir / "model.pt"
+    manifest_path = resolved_output_dir / TRAINING_MANIFEST_FILENAME
+    effective_config = normalize_training_config(config)
+
+    retrain_reasons: List[str] = []
+    if force_retrain:
+        retrain_reasons.append("Force retrain requested.")
+    elif manifest_path.exists():
+        try:
+            manifest = load_training_manifest(manifest_path)
+        except (OSError, pickle.PickleError, ValueError) as exc:
+            retrain_reasons.append(f"Could not load training manifest: {exc}")
+        else:
+            reusable, reuse_blockers = is_training_manifest_compatible(
+                manifest=manifest,
+                checkpoint_path=checkpoint_path,
+                model_name=model_name,
+                config=effective_config,
+                train_path=resolved_train_path,
+                validation_path=resolved_validation_path,
+                use_pseudo_labels=use_pseudo_labels,
+                pseudo_label_path=resolved_pseudo_label_path if use_pseudo_labels else None,
+            )
+            if reusable:
+                return {
+                    "reused_existing_training": True,
+                    "model_name": str(manifest.get("model_name", resolve_model_name(model_name))),
+                    "checkpoint_path": str(checkpoint_path.resolve()),
+                    "training_manifest_path": str(manifest_path.resolve()),
+                    "best_threshold": float(manifest.get("best_threshold", 0.5)),
+                    "metrics": dict(manifest.get("metrics", {})),
+                    "config": dict(manifest.get("config", effective_config)),
+                    "retrain_reasons": [],
+                }
+            retrain_reasons.extend(reuse_blockers)
+    else:
+        retrain_reasons.append(f"Training manifest not found at {manifest_path}.")
+
+    train_df = load_dataframe(resolved_train_path)
+    val_df = load_dataframe(resolved_validation_path)
+    if use_pseudo_labels:
+        if not resolved_pseudo_label_path.exists():
+            raise FileNotFoundError(
+                f"Pseudo-label path does not exist: {resolved_pseudo_label_path}"
+            )
+        pseudo_df = load_pseudo_label_dataframe(resolved_pseudo_label_path)
+        train_df = merge_pseudo_labels(train_df, pseudo_df)
+        print(f"Loaded {len(pseudo_df)} pseudo-labeled rows.")
+
+    model, metrics, threshold = train_model(
+        train_df=train_df,
+        val_df=val_df,
+        model_name=model_name,
+        config=effective_config,
+        output_dir=resolved_output_dir,
+    )
+    del model
+
+    checkpoint_path = resolved_output_dir / "model.pt"
+    manifest_path = save_training_manifest(
+        output_dir=resolved_output_dir,
+        checkpoint_path=checkpoint_path,
+        model_name=model_name,
+        config=effective_config,
+        metrics=metrics,
+        threshold=threshold,
+        train_path=resolved_train_path,
+        validation_path=resolved_validation_path,
+        use_pseudo_labels=use_pseudo_labels,
+        pseudo_label_path=resolved_pseudo_label_path if use_pseudo_labels else None,
+    )
+    return {
+        "reused_existing_training": False,
+        "model_name": resolve_model_name(model_name),
+        "checkpoint_path": str(checkpoint_path.resolve()),
+        "training_manifest_path": str(manifest_path.resolve()),
+        "best_threshold": float(threshold),
+        "metrics": metrics,
+        "config": effective_config,
+        "retrain_reasons": retrain_reasons,
+    }
 
 
 def resolve_model_name(model_name: Optional[str]) -> str:
