@@ -12,6 +12,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 
+from dataset import sanitize_aspect_sentiments
+
 
 VALID_ASPECTS = [
     "food",
@@ -74,6 +76,8 @@ def validate_review_entry(entry: Dict, index: int) -> List[str]:
     if not isinstance(aspects, list):
         errors.append(f"Entry {index}: aspects must be a list, got {type(aspects)}")
     else:
+        if len(aspects) != len(set(aspects)):
+            errors.append(f"Entry {index}: duplicate aspects are not allowed")
         for aspect in aspects:
             if aspect not in VALID_ASPECTS:
                 errors.append(f"Entry {index}: Invalid aspect '{aspect}'")
@@ -228,13 +232,7 @@ def fix_submission(
                 sentiment = "neutral"
             fixed_sentiments[aspect] = sentiment
 
-        if not valid_aspects:
-            valid_aspects = ["none"]
-            fixed_sentiments = {"none": "neutral"}
-
-        if "none" in valid_aspects and len(valid_aspects) > 1:
-            valid_aspects = ["none"]
-            fixed_sentiments = {"none": "neutral"}
+        valid_aspects, fixed_sentiments = sanitize_aspect_sentiments(valid_aspects, fixed_sentiments)
 
         fixed_entry["aspects"] = valid_aspects
         fixed_entry["aspect_sentiments"] = fixed_sentiments

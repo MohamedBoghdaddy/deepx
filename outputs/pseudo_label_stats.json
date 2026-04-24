@@ -1,0 +1,10 @@
+{
+  "total_unlabeled_reviews": 7047,
+  "kept_pseudo_labels": 2465,
+  "average_confidence": 0.959169,
+  "filter_stats": {
+    "low_confidence": 4582,
+    "kept": 2465
+  },
+  "output_path": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\pseudo_labeled.json"
+}

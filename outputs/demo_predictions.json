@@ -1,0 +1,2825 @@
+[
+  {
+    "review_id": 4446,
+    "review_text": "مريم سوتلي الاظافررر تحفههه اوييي ❤️❤️❤️❤️❤️",
+    "predicted_aspects": [
+      "service"
+    ],
+    "aspect_sentiments": {
+      "service": "positive"
+    },
+    "confidence": 0.724987,
+    "aspect_probabilities": {
+      "food": 0.048388,
+      "service": 0.874987,
+      "price": 0.010465,
+      "cleanliness": 0.011046,
+      "delivery": 0.016231,
+      "ambiance": 0.027182,
+      "app_experience": 0.020872,
+      "general": 0.040137,
+      "none": 0.028023
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.048388,
+        "negative": 0.007277,
+        "neutral": 0.014684
+      },
+      "service": {
+        "positive": 0.874987,
+        "negative": 0.005853,
+        "neutral": 0.007705
+      },
+      "price": {
+        "positive": 0.010465,
+        "negative": 0.005123,
+        "neutral": 0.006674
+      },
+      "cleanliness": {
+        "positive": 0.011046,
+        "negative": 0.007385,
+        "neutral": 0.004476
+      },
+      "delivery": {
+        "positive": 0.016231,
+        "negative": 0.009184,
+        "neutral": 0.007266
+      },
+      "ambiance": {
+        "positive": 0.027182,
+        "negative": 0.008117,
+        "neutral": 0.004414
+      },
+      "app_experience": {
+        "positive": 0.020872,
+        "negative": 0.010178,
+        "neutral": 0.009436
+      },
+      "general": {
+        "positive": 0.040137,
+        "negative": 0.013402,
+        "neutral": 0.011572
+      },
+      "none": {
+        "positive": 0.004934,
+        "negative": 0.003719,
+        "neutral": 0.028023
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      },
+      "service": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      },
+      "price": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      },
+      "general": {
+        "positive": [
+          "تحفه",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS",
+          "EMO_POS"
+        ]
+      }
+    },
+    "emoji_tokens": [
+      "EMO_POS",
+      "EMO_POS",
+      "EMO_POS",
+      "EMO_POS",
+      "EMO_POS"
+    ],
+    "emoji_names": [
+      "red_heart",
+      "red_heart",
+      "red_heart",
+      "red_heart",
+      "red_heart"
+    ],
+    "rule_decisions": [
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Model kept aspect 'service' at probability 0.875 above threshold 0.550.",
+      "Lowered confidence for 'service' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 8612,
+    "review_text": "التطبيق جميل .. أتمنى إضافة البحث عن طريق الخريطة وتكون جميع العروض ظاهرة بالخريطة مثل موقع بوكينق .. وشكرا",
+    "predicted_aspects": [
+      "app_experience"
+    ],
+    "aspect_sentiments": {
+      "app_experience": "positive"
+    },
+    "confidence": 0.747895,
+    "aspect_probabilities": {
+      "food": 0.019101,
+      "service": 0.031152,
+      "price": 0.038905,
+      "cleanliness": 0.012464,
+      "delivery": 0.019374,
+      "ambiance": 0.025203,
+      "app_experience": 0.897895,
+      "general": 0.011612,
+      "none": 0.068818
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.019101,
+        "negative": 0.015153,
+        "neutral": 0.007019
+      },
+      "service": {
+        "positive": 0.031152,
+        "negative": 0.007169,
+        "neutral": 0.016748
+      },
+      "price": {
+        "positive": 0.038905,
+        "negative": 0.026642,
+        "neutral": 0.01473
+      },
+      "cleanliness": {
+        "positive": 0.011394,
+        "negative": 0.012464,
+        "neutral": 0.005557
+      },
+      "delivery": {
+        "positive": 0.019374,
+        "negative": 0.008393,
+        "neutral": 0.008788
+      },
+      "ambiance": {
+        "positive": 0.025203,
+        "negative": 0.018877,
+        "neutral": 0.008159
+      },
+      "app_experience": {
+        "positive": 0.897895,
+        "negative": 0.045728,
+        "neutral": 0.062975
+      },
+      "general": {
+        "positive": 0.010679,
+        "negative": 0.00798,
+        "neutral": 0.011612
+      },
+      "none": {
+        "positive": 0.007435,
+        "negative": 0.005607,
+        "neutral": 0.068818
+      }
+    },
+    "matched_keywords": {
+      "app_experience": [
+        "التطبيق",
+        "الخريطه",
+        "بحث",
+        "تطبيق"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "جميل"
+        ]
+      },
+      "service": {
+        "positive": [
+          "جميل"
+        ]
+      },
+      "price": {
+        "positive": [
+          "جميل"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "جميل"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "جميل"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "جميل"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "جميل"
+        ]
+      },
+      "general": {
+        "positive": [
+          "جميل"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Model kept aspect 'app_experience' at probability 0.898 above threshold 0.550.",
+      "Lowered confidence for 'app_experience' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 6729,
+    "review_text": "سراقين مكتوب وصلت السياره والسواق مارضى يقول وين ولمى الرحله من عنده وحطو لي 10 ريال ادفعها حسبي الله ونعم الوكيل فيه",
+    "predicted_aspects": [
+      "service",
+      "price"
+    ],
+    "aspect_sentiments": {
+      "service": "negative",
+      "price": "negative"
+    },
+    "confidence": 0.719405,
+    "aspect_probabilities": {
+      "food": 0.025671,
+      "service": 0.962381,
+      "price": 0.719405,
+      "cleanliness": 0.015046,
+      "delivery": 0.462541,
+      "ambiance": 0.028134,
+      "app_experience": 0.216023,
+      "general": 0.014408,
+      "none": 0.014704
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.009396,
+        "negative": 0.025671,
+        "neutral": 0.011895
+      },
+      "service": {
+        "positive": 0.031059,
+        "negative": 0.962381,
+        "neutral": 0.018637
+      },
+      "price": {
+        "positive": 0.011104,
+        "negative": 0.719405,
+        "neutral": 0.010069
+      },
+      "cleanliness": {
+        "positive": 0.009479,
+        "negative": 0.015046,
+        "neutral": 0.006962
+      },
+      "delivery": {
+        "positive": 0.011935,
+        "negative": 0.462541,
+        "neutral": 0.007293
+      },
+      "ambiance": {
+        "positive": 0.007872,
+        "negative": 0.028134,
+        "neutral": 0.004137
+      },
+      "app_experience": {
+        "positive": 0.008389,
+        "negative": 0.216023,
+        "neutral": 0.014818
+      },
+      "general": {
+        "positive": 0.014408,
+        "negative": 0.007435,
+        "neutral": 0.009948
+      },
+      "none": {
+        "positive": 0.008474,
+        "negative": 0.00671,
+        "neutral": 0.014704
+      }
+    },
+    "matched_keywords": {
+      "delivery": [
+        "وصل"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'service' at probability 0.962 above threshold 0.550.",
+      "Model kept aspect 'price' at probability 0.719 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 6292,
+    "review_text": "سي جيدا",
+    "predicted_aspects": [
+      "general"
+    ],
+    "aspect_sentiments": {
+      "general": "positive"
+    },
+    "confidence": 0.898451,
+    "aspect_probabilities": {
+      "food": 0.015134,
+      "service": 0.018375,
+      "price": 0.011643,
+      "cleanliness": 0.01097,
+      "delivery": 0.017448,
+      "ambiance": 0.010454,
+      "app_experience": 0.014432,
+      "general": 0.898451,
+      "none": 0.061065
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.009227,
+        "negative": 0.013706,
+        "neutral": 0.015134
+      },
+      "service": {
+        "positive": 0.013839,
+        "negative": 0.018375,
+        "neutral": 0.011277
+      },
+      "price": {
+        "positive": 0.011643,
+        "negative": 0.010614,
+        "neutral": 0.008702
+      },
+      "cleanliness": {
+        "positive": 0.009192,
+        "negative": 0.01097,
+        "neutral": 0.005498
+      },
+      "delivery": {
+        "positive": 0.017448,
+        "negative": 0.013275,
+        "neutral": 0.011193
+      },
+      "ambiance": {
+        "positive": 0.010454,
+        "negative": 0.009955,
+        "neutral": 0.007773
+      },
+      "app_experience": {
+        "positive": 0.006268,
+        "negative": 0.014432,
+        "neutral": 0.011755
+      },
+      "general": {
+        "positive": 0.898451,
+        "negative": 0.051814,
+        "neutral": 0.040056
+      },
+      "none": {
+        "positive": 0.005692,
+        "negative": 0.006696,
+        "neutral": 0.061065
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'general' at probability 0.898 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 1639,
+    "review_text": "مكان ممتاز جدا و الخدمة جيده جدا",
+    "predicted_aspects": [
+      "service",
+      "ambiance"
+    ],
+    "aspect_sentiments": {
+      "service": "positive",
+      "ambiance": "positive"
+    },
+    "confidence": 0.804442,
+    "aspect_probabilities": {
+      "food": 0.041901,
+      "service": 0.962571,
+      "price": 0.038154,
+      "cleanliness": 0.076657,
+      "delivery": 0.020301,
+      "ambiance": 0.954442,
+      "app_experience": 0.022493,
+      "general": 0.02013,
+      "none": 0.010705
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.041901,
+        "negative": 0.010772,
+        "neutral": 0.009575
+      },
+      "service": {
+        "positive": 0.962571,
+        "negative": 0.016091,
+        "neutral": 0.015025
+      },
+      "price": {
+        "positive": 0.038154,
+        "negative": 0.016228,
+        "neutral": 0.012096
+      },
+      "cleanliness": {
+        "positive": 0.076657,
+        "negative": 0.010966,
+        "neutral": 0.006618
+      },
+      "delivery": {
+        "positive": 0.020301,
+        "negative": 0.012186,
+        "neutral": 0.006648
+      },
+      "ambiance": {
+        "positive": 0.954442,
+        "negative": 0.026205,
+        "neutral": 0.010199
+      },
+      "app_experience": {
+        "positive": 0.022493,
+        "negative": 0.007852,
+        "neutral": 0.013181
+      },
+      "general": {
+        "positive": 0.02013,
+        "negative": 0.009821,
+        "neutral": 0.01028
+      },
+      "none": {
+        "positive": 0.010705,
+        "negative": 0.007455,
+        "neutral": 0.00956
+      }
+    },
+    "matched_keywords": {
+      "service": [
+        "الخدمه",
+        "خدمه"
+      ],
+      "ambiance": [
+        "مكان"
+      ],
+      "general": [
+        "مكان"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "service": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "price": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "general": {
+        "positive": [
+          "ممتاز"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Model kept aspect 'service' at probability 0.963 above threshold 0.550.",
+      "Model kept aspect 'ambiance' at probability 0.954 above threshold 0.550.",
+      "Lowered confidence for 'service' due to sarcasm candidate cues.",
+      "Lowered confidence for 'ambiance' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 4277,
+    "review_text": "الحقيقة خدمة الإفطار والغداء من افضل الخدمات الموجود.ولا انسي الاستاذة حبيبة من الناس الممتازين الحقيقة لكم كل التحايا",
+    "predicted_aspects": [
+      "service"
+    ],
+    "aspect_sentiments": {
+      "service": "positive"
+    },
+    "confidence": 0.988868,
+    "aspect_probabilities": {
+      "food": 0.534291,
+      "service": 0.988868,
+      "price": 0.016669,
+      "cleanliness": 0.011253,
+      "delivery": 0.018081,
+      "ambiance": 0.277489,
+      "app_experience": 0.014646,
+      "general": 0.011044,
+      "none": 0.011127
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.534291,
+        "negative": 0.015558,
+        "neutral": 0.027
+      },
+      "service": {
+        "positive": 0.988868,
+        "negative": 0.011953,
+        "neutral": 0.012218
+      },
+      "price": {
+        "positive": 0.016669,
+        "negative": 0.007729,
+        "neutral": 0.0124
+      },
+      "cleanliness": {
+        "positive": 0.011253,
+        "negative": 0.009094,
+        "neutral": 0.006832
+      },
+      "delivery": {
+        "positive": 0.018081,
+        "negative": 0.013956,
+        "neutral": 0.009248
+      },
+      "ambiance": {
+        "positive": 0.277489,
+        "negative": 0.018462,
+        "neutral": 0.010764
+      },
+      "app_experience": {
+        "positive": 0.014646,
+        "negative": 0.009336,
+        "neutral": 0.008797
+      },
+      "general": {
+        "positive": 0.011044,
+        "negative": 0.008853,
+        "neutral": 0.008949
+      },
+      "none": {
+        "positive": 0.008134,
+        "negative": 0.004208,
+        "neutral": 0.011127
+      }
+    },
+    "matched_keywords": {
+      "service": [
+        "خدمه"
+      ],
+      "ambiance": [
+        "جو"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'service' at probability 0.989 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 1957,
+    "review_text": "الاكل تحفه و المكان جميل جدا",
+    "predicted_aspects": [
+      "ambiance",
+      "food"
+    ],
+    "aspect_sentiments": {
+      "ambiance": "positive",
+      "food": "positive"
+    },
+    "confidence": 0.80286,
+    "aspect_probabilities": {
+      "food": 0.95286,
+      "service": 0.214414,
+      "price": 0.026684,
+      "cleanliness": 0.037775,
+      "delivery": 0.021314,
+      "ambiance": 0.974029,
+      "app_experience": 0.018147,
+      "general": 0.01736,
+      "none": 0.012773
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.95286,
+        "negative": 0.022101,
+        "neutral": 0.030516
+      },
+      "service": {
+        "positive": 0.214414,
+        "negative": 0.023863,
+        "neutral": 0.024414
+      },
+      "price": {
+        "positive": 0.026684,
+        "negative": 0.007359,
+        "neutral": 0.021575
+      },
+      "cleanliness": {
+        "positive": 0.037775,
+        "negative": 0.018069,
+        "neutral": 0.007437
+      },
+      "delivery": {
+        "positive": 0.021314,
+        "negative": 0.015093,
+        "neutral": 0.010372
+      },
+      "ambiance": {
+        "positive": 0.974029,
+        "negative": 0.053933,
+        "neutral": 0.020989
+      },
+      "app_experience": {
+        "positive": 0.013473,
+        "negative": 0.012906,
+        "neutral": 0.018147
+      },
+      "general": {
+        "positive": 0.014071,
+        "negative": 0.012459,
+        "neutral": 0.01736
+      },
+      "none": {
+        "positive": 0.007848,
+        "negative": 0.012773,
+        "neutral": 0.011515
+      }
+    },
+    "matched_keywords": {
+      "food": [
+        "اكل",
+        "الاكل"
+      ],
+      "ambiance": [
+        "المكان",
+        "مكان"
+      ],
+      "general": [
+        "مكان"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      },
+      "service": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      },
+      "price": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      },
+      "general": {
+        "positive": [
+          "تحفه",
+          "جميل"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Model kept aspect 'food' at probability 0.953 above threshold 0.550.",
+      "Model kept aspect 'ambiance' at probability 0.974 above threshold 0.550.",
+      "Lowered confidence for 'ambiance' due to sarcasm candidate cues.",
+      "Lowered confidence for 'food' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 6683,
+    "review_text": "ممتاز",
+    "predicted_aspects": [
+      "general"
+    ],
+    "aspect_sentiments": {
+      "general": "positive"
+    },
+    "confidence": 0.969525,
+    "aspect_probabilities": {
+      "food": 0.016571,
+      "service": 0.017605,
+      "price": 0.017156,
+      "cleanliness": 0.011232,
+      "delivery": 0.018697,
+      "ambiance": 0.01263,
+      "app_experience": 0.012372,
+      "general": 0.969525,
+      "none": 0.012378
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.015651,
+        "negative": 0.013216,
+        "neutral": 0.016571
+      },
+      "service": {
+        "positive": 0.016534,
+        "negative": 0.017605,
+        "neutral": 0.0085
+      },
+      "price": {
+        "positive": 0.014541,
+        "negative": 0.017156,
+        "neutral": 0.010492
+      },
+      "cleanliness": {
+        "positive": 0.011232,
+        "negative": 0.009312,
+        "neutral": 0.006453
+      },
+      "delivery": {
+        "positive": 0.018697,
+        "negative": 0.014202,
+        "neutral": 0.008402
+      },
+      "ambiance": {
+        "positive": 0.01263,
+        "negative": 0.01145,
+        "neutral": 0.009923
+      },
+      "app_experience": {
+        "positive": 0.010639,
+        "negative": 0.012372,
+        "neutral": 0.012217
+      },
+      "general": {
+        "positive": 0.969525,
+        "negative": 0.025191,
+        "neutral": 0.025876
+      },
+      "none": {
+        "positive": 0.006143,
+        "negative": 0.006313,
+        "neutral": 0.012378
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "service": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "price": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "general": {
+        "positive": [
+          "ممتاز"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'general' at probability 0.970 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 1228,
+    "review_text": "تبولة من افضل المطاعم التي ازورها في القاهرة طعام لذيذ اطلب ولاتفكر في الطعم\nكل الحب لتبولة .",
+    "predicted_aspects": [
+      "food"
+    ],
+    "aspect_sentiments": {
+      "food": "positive"
+    },
+    "confidence": 0.814564,
+    "aspect_probabilities": {
+      "food": 0.964564,
+      "service": 0.106604,
+      "price": 0.028504,
+      "cleanliness": 0.011409,
+      "delivery": 0.020811,
+      "ambiance": 0.093709,
+      "app_experience": 0.0159,
+      "general": 0.023973,
+      "none": 0.010572
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.964564,
+        "negative": 0.026461,
+        "neutral": 0.049303
+      },
+      "service": {
+        "positive": 0.106604,
+        "negative": 0.017588,
+        "neutral": 0.012754
+      },
+      "price": {
+        "positive": 0.028504,
+        "negative": 0.006191,
+        "neutral": 0.012551
+      },
+      "cleanliness": {
+        "positive": 0.005467,
+        "negative": 0.011409,
+        "neutral": 0.005314
+      },
+      "delivery": {
+        "positive": 0.020811,
+        "negative": 0.009646,
+        "neutral": 0.011443
+      },
+      "ambiance": {
+        "positive": 0.093709,
+        "negative": 0.016156,
+        "neutral": 0.008246
+      },
+      "app_experience": {
+        "positive": 0.0159,
+        "negative": 0.007591,
+        "neutral": 0.008058
+      },
+      "general": {
+        "positive": 0.023973,
+        "negative": 0.010344,
+        "neutral": 0.013396
+      },
+      "none": {
+        "positive": 0.005989,
+        "negative": 0.005148,
+        "neutral": 0.010572
+      }
+    },
+    "matched_keywords": {
+      "food": [
+        "طعام",
+        "طعم"
+      ],
+      "delivery": [
+        "طلب"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "لذيذ"
+        ]
+      },
+      "service": {
+        "positive": [
+          "لذيذ"
+        ]
+      },
+      "price": {
+        "positive": [
+          "لذيذ"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "لذيذ"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "لذيذ"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "لذيذ"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "لذيذ"
+        ]
+      },
+      "general": {
+        "positive": [
+          "لذيذ"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Model kept aspect 'food' at probability 0.965 above threshold 0.550.",
+      "Lowered confidence for 'food' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 7814,
+    "review_text": "نصيحه متشتريش منتج وتكون دافع مسبقا بفيزا هيحصل حاجه من الاتنين المندوب هيعمل انه سلمها او التاجر هيلغب لو السعر اتغير وفي الحالتين الفلوس هترجعلك بعد خمس ايام",
+    "predicted_aspects": [
+      "price",
+      "delivery"
+    ],
+    "aspect_sentiments": {
+      "price": "negative",
+      "delivery": "negative"
+    },
+    "confidence": 0.586988,
+    "aspect_probabilities": {
+      "food": 0.065071,
+      "service": 0.262412,
+      "price": 0.960338,
+      "cleanliness": 0.012629,
+      "delivery": 0.586988,
+      "ambiance": 0.013335,
+      "app_experience": 0.446798,
+      "general": 0.014822,
+      "none": 0.009626
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.007172,
+        "negative": 0.065071,
+        "neutral": 0.016737
+      },
+      "service": {
+        "positive": 0.041998,
+        "negative": 0.262412,
+        "neutral": 0.015041
+      },
+      "price": {
+        "positive": 0.01818,
+        "negative": 0.960338,
+        "neutral": 0.015688
+      },
+      "cleanliness": {
+        "positive": 0.012629,
+        "negative": 0.010626,
+        "neutral": 0.011432
+      },
+      "delivery": {
+        "positive": 0.032056,
+        "negative": 0.586988,
+        "neutral": 0.008365
+      },
+      "ambiance": {
+        "positive": 0.007258,
+        "negative": 0.013335,
+        "neutral": 0.007139
+      },
+      "app_experience": {
+        "positive": 0.01653,
+        "negative": 0.446798,
+        "neutral": 0.025988
+      },
+      "general": {
+        "positive": 0.011954,
+        "negative": 0.014822,
+        "neutral": 0.012603
+      },
+      "none": {
+        "positive": 0.005035,
+        "negative": 0.006388,
+        "neutral": 0.009626
+      }
+    },
+    "matched_keywords": {
+      "price": [
+        "السعر",
+        "سعر"
+      ],
+      "delivery": [
+        "مندوب"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'price' at probability 0.960 above threshold 0.550.",
+      "Model kept aspect 'delivery' at probability 0.587 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 7619,
+    "review_text": "تم اضافة مصاريف شحن على طلب إكسبريس",
+    "predicted_aspects": [
+      "app_experience"
+    ],
+    "aspect_sentiments": {
+      "app_experience": "negative"
+    },
+    "confidence": 0.794339,
+    "aspect_probabilities": {
+      "food": 0.035627,
+      "service": 0.030986,
+      "price": 0.489013,
+      "cleanliness": 0.013491,
+      "delivery": 0.380592,
+      "ambiance": 0.015125,
+      "app_experience": 0.794339,
+      "general": 0.03611,
+      "none": 0.017577
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.012631,
+        "negative": 0.035627,
+        "neutral": 0.013478
+      },
+      "service": {
+        "positive": 0.030986,
+        "negative": 0.019269,
+        "neutral": 0.02228
+      },
+      "price": {
+        "positive": 0.006756,
+        "negative": 0.489013,
+        "neutral": 0.021352
+      },
+      "cleanliness": {
+        "positive": 0.012739,
+        "negative": 0.011094,
+        "neutral": 0.013491
+      },
+      "delivery": {
+        "positive": 0.037113,
+        "negative": 0.380592,
+        "neutral": 0.009886
+      },
+      "ambiance": {
+        "positive": 0.008844,
+        "negative": 0.010572,
+        "neutral": 0.015125
+      },
+      "app_experience": {
+        "positive": 0.008583,
+        "negative": 0.794339,
+        "neutral": 0.043783
+      },
+      "general": {
+        "positive": 0.013941,
+        "negative": 0.03611,
+        "neutral": 0.023698
+      },
+      "none": {
+        "positive": 0.00691,
+        "negative": 0.011265,
+        "neutral": 0.017577
+      }
+    },
+    "matched_keywords": {
+      "delivery": [
+        "طلب"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'app_experience' at probability 0.794 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 6817,
+    "review_text": "ممتاز",
+    "predicted_aspects": [
+      "general"
+    ],
+    "aspect_sentiments": {
+      "general": "positive"
+    },
+    "confidence": 0.969525,
+    "aspect_probabilities": {
+      "food": 0.016571,
+      "service": 0.017605,
+      "price": 0.017156,
+      "cleanliness": 0.011232,
+      "delivery": 0.018697,
+      "ambiance": 0.01263,
+      "app_experience": 0.012372,
+      "general": 0.969525,
+      "none": 0.012378
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.015651,
+        "negative": 0.013216,
+        "neutral": 0.016571
+      },
+      "service": {
+        "positive": 0.016534,
+        "negative": 0.017605,
+        "neutral": 0.0085
+      },
+      "price": {
+        "positive": 0.014541,
+        "negative": 0.017156,
+        "neutral": 0.010492
+      },
+      "cleanliness": {
+        "positive": 0.011232,
+        "negative": 0.009312,
+        "neutral": 0.006453
+      },
+      "delivery": {
+        "positive": 0.018697,
+        "negative": 0.014202,
+        "neutral": 0.008402
+      },
+      "ambiance": {
+        "positive": 0.01263,
+        "negative": 0.01145,
+        "neutral": 0.009923
+      },
+      "app_experience": {
+        "positive": 0.010639,
+        "negative": 0.012372,
+        "neutral": 0.012217
+      },
+      "general": {
+        "positive": 0.969525,
+        "negative": 0.025191,
+        "neutral": 0.025876
+      },
+      "none": {
+        "positive": 0.006143,
+        "negative": 0.006313,
+        "neutral": 0.012378
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "service": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "price": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "general": {
+        "positive": [
+          "ممتاز"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'general' at probability 0.970 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 7042,
+    "review_text": "أفضل خدمة و أفضل شركاء",
+    "predicted_aspects": [
+      "service"
+    ],
+    "aspect_sentiments": {
+      "service": "positive"
+    },
+    "confidence": 0.978274,
+    "aspect_probabilities": {
+      "food": 0.084117,
+      "service": 0.978274,
+      "price": 0.069883,
+      "cleanliness": 0.014064,
+      "delivery": 0.048849,
+      "ambiance": 0.026583,
+      "app_experience": 0.022483,
+      "general": 0.040618,
+      "none": 0.011047
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.084117,
+        "negative": 0.008358,
+        "neutral": 0.019739
+      },
+      "service": {
+        "positive": 0.978274,
+        "negative": 0.016104,
+        "neutral": 0.009049
+      },
+      "price": {
+        "positive": 0.069883,
+        "negative": 0.010436,
+        "neutral": 0.008506
+      },
+      "cleanliness": {
+        "positive": 0.014064,
+        "negative": 0.007478,
+        "neutral": 0.008122
+      },
+      "delivery": {
+        "positive": 0.048849,
+        "negative": 0.015169,
+        "neutral": 0.005828
+      },
+      "ambiance": {
+        "positive": 0.026583,
+        "negative": 0.010345,
+        "neutral": 0.007067
+      },
+      "app_experience": {
+        "positive": 0.022483,
+        "negative": 0.013367,
+        "neutral": 0.007482
+      },
+      "general": {
+        "positive": 0.040618,
+        "negative": 0.008317,
+        "neutral": 0.008795
+      },
+      "none": {
+        "positive": 0.007806,
+        "negative": 0.005908,
+        "neutral": 0.011047
+      }
+    },
+    "matched_keywords": {
+      "service": [
+        "خدمه"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'service' at probability 0.978 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 8141,
+    "review_text": "عراقي",
+    "predicted_aspects": [
+      "none"
+    ],
+    "aspect_sentiments": {
+      "none": "neutral"
+    },
+    "confidence": 0.403134,
+    "aspect_probabilities": {
+      "food": 0.017033,
+      "service": 0.021838,
+      "price": 0.012503,
+      "cleanliness": 0.014316,
+      "delivery": 0.014811,
+      "ambiance": 0.011225,
+      "app_experience": 0.022794,
+      "general": 0.334637,
+      "none": 0.403134
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.017033,
+        "negative": 0.01458,
+        "neutral": 0.009538
+      },
+      "service": {
+        "positive": 0.021838,
+        "negative": 0.016116,
+        "neutral": 0.011614
+      },
+      "price": {
+        "positive": 0.006275,
+        "negative": 0.012503,
+        "neutral": 0.010037
+      },
+      "cleanliness": {
+        "positive": 0.008561,
+        "negative": 0.014316,
+        "neutral": 0.005833
+      },
+      "delivery": {
+        "positive": 0.007471,
+        "negative": 0.007108,
+        "neutral": 0.014811
+      },
+      "ambiance": {
+        "positive": 0.010422,
+        "negative": 0.011225,
+        "neutral": 0.006564
+      },
+      "app_experience": {
+        "positive": 0.011071,
+        "negative": 0.022794,
+        "neutral": 0.022066
+      },
+      "general": {
+        "positive": 0.334637,
+        "negative": 0.057492,
+        "neutral": 0.03577
+      },
+      "none": {
+        "positive": 0.006015,
+        "negative": 0.00545,
+        "neutral": 0.403134
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "service": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "price": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "cleanliness": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "delivery": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "ambiance": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "app_experience": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "general": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Returned 'none' because no aspect signal survived post-processing."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 10016,
+    "review_text": "التطبيق غير موثوق بالمرة تعرضت فيه لعملية نصب و دفعت ثمن حجز ٤ ايام و الغرفة اللي استلمتها غير مطابقة للصور ابدا الغرفة كانت غير صالحة للسكن البشري شي بيشبه الزريبة و لا يوجود طريقة لالغاء الحجز مع استرداد كامل المبلغ و لما تواصلت مع التطبيق بعد اسبوعين اخد و رد بالاخير بيبعتولي ايميل بقولو فيه اذا صاحب الغرفة ما وافق على ارجاع المبلغ ما منقدر نرجعلك شي يعني حقك غير محفوظ اذا صاحب الغرفة كان نصاب",
+    "predicted_aspects": [
+      "app_experience",
+      "service",
+      "price"
+    ],
+    "aspect_sentiments": {
+      "app_experience": "negative",
+      "service": "negative",
+      "price": "negative"
+    },
+    "confidence": 0.70211,
+    "aspect_probabilities": {
+      "food": 0.018485,
+      "service": 0.961764,
+      "price": 0.70211,
+      "cleanliness": 0.051069,
+      "delivery": 0.046642,
+      "ambiance": 0.072133,
+      "app_experience": 0.964768,
+      "general": 0.012519,
+      "none": 0.017422
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.007271,
+        "negative": 0.011265,
+        "neutral": 0.018485
+      },
+      "service": {
+        "positive": 0.019571,
+        "negative": 0.961764,
+        "neutral": 0.014651
+      },
+      "price": {
+        "positive": 0.018575,
+        "negative": 0.70211,
+        "neutral": 0.010851
+      },
+      "cleanliness": {
+        "positive": 0.022943,
+        "negative": 0.051069,
+        "neutral": 0.008071
+      },
+      "delivery": {
+        "positive": 0.015582,
+        "negative": 0.046642,
+        "neutral": 0.010867
+      },
+      "ambiance": {
+        "positive": 0.011738,
+        "negative": 0.072133,
+        "neutral": 0.009074
+      },
+      "app_experience": {
+        "positive": 0.014591,
+        "negative": 0.964768,
+        "neutral": 0.013185
+      },
+      "general": {
+        "positive": 0.012519,
+        "negative": 0.009394,
+        "neutral": 0.010166
+      },
+      "none": {
+        "positive": 0.017422,
+        "negative": 0.01371,
+        "neutral": 0.012859
+      }
+    },
+    "matched_keywords": {
+      "ambiance": [
+        "جو"
+      ],
+      "app_experience": [
+        "التطبيق",
+        "تطبيق"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'service' at probability 0.962 above threshold 0.550.",
+      "Model kept aspect 'price' at probability 0.702 above threshold 0.550.",
+      "Model kept aspect 'app_experience' at probability 0.965 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 9962,
+    "review_text": "تطبيق رائع",
+    "predicted_aspects": [
+      "app_experience"
+    ],
+    "aspect_sentiments": {
+      "app_experience": "positive"
+    },
+    "confidence": 0.954506,
+    "aspect_probabilities": {
+      "food": 0.01964,
+      "service": 0.032954,
+      "price": 0.028479,
+      "cleanliness": 0.014063,
+      "delivery": 0.027083,
+      "ambiance": 0.019727,
+      "app_experience": 0.954506,
+      "general": 0.015179,
+      "none": 0.045845
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.016646,
+        "negative": 0.01964,
+        "neutral": 0.008283
+      },
+      "service": {
+        "positive": 0.032954,
+        "negative": 0.018539,
+        "neutral": 0.01794
+      },
+      "price": {
+        "positive": 0.02183,
+        "negative": 0.028479,
+        "neutral": 0.014077
+      },
+      "cleanliness": {
+        "positive": 0.013422,
+        "negative": 0.014063,
+        "neutral": 0.006205
+      },
+      "delivery": {
+        "positive": 0.027083,
+        "negative": 0.017536,
+        "neutral": 0.0099
+      },
+      "ambiance": {
+        "positive": 0.01755,
+        "negative": 0.019727,
+        "neutral": 0.012737
+      },
+      "app_experience": {
+        "positive": 0.954506,
+        "negative": 0.018303,
+        "neutral": 0.023497
+      },
+      "general": {
+        "positive": 0.010703,
+        "negative": 0.012097,
+        "neutral": 0.015179
+      },
+      "none": {
+        "positive": 0.013548,
+        "negative": 0.007741,
+        "neutral": 0.045845
+      }
+    },
+    "matched_keywords": {
+      "app_experience": [
+        "تطبيق"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "رائع"
+        ]
+      },
+      "service": {
+        "positive": [
+          "رائع"
+        ]
+      },
+      "price": {
+        "positive": [
+          "رائع"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "رائع"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "رائع"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "رائع"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "رائع"
+        ]
+      },
+      "general": {
+        "positive": [
+          "رائع"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'app_experience' at probability 0.955 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 3871,
+    "review_text": "برجاء الإشراف والمتابعة لجميع مستشفيات الحكوميه من المسؤولين.\nالوقايه خير من العلاج لو يوجد وقايه ولا علاج",
+    "predicted_aspects": [
+      "none"
+    ],
+    "aspect_sentiments": {
+      "none": "neutral"
+    },
+    "confidence": 0.05,
+    "aspect_probabilities": {
+      "food": 0.010876,
+      "service": 0.364766,
+      "price": 0.01167,
+      "cleanliness": 0.018918,
+      "delivery": 0.012725,
+      "ambiance": 0.013711,
+      "app_experience": 0.080735,
+      "general": 0.049595,
+      "none": 0.049719
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.008316,
+        "negative": 0.006184,
+        "neutral": 0.010876
+      },
+      "service": {
+        "positive": 0.065846,
+        "negative": 0.364766,
+        "neutral": 0.008918
+      },
+      "price": {
+        "positive": 0.002916,
+        "negative": 0.01167,
+        "neutral": 0.00695
+      },
+      "cleanliness": {
+        "positive": 0.009987,
+        "negative": 0.018918,
+        "neutral": 0.005169
+      },
+      "delivery": {
+        "positive": 0.007183,
+        "negative": 0.012725,
+        "neutral": 0.005128
+      },
+      "ambiance": {
+        "positive": 0.009786,
+        "negative": 0.013711,
+        "neutral": 0.004355
+      },
+      "app_experience": {
+        "positive": 0.010891,
+        "negative": 0.080735,
+        "neutral": 0.009577
+      },
+      "general": {
+        "positive": 0.021661,
+        "negative": 0.049595,
+        "neutral": 0.013285
+      },
+      "none": {
+        "positive": 0.006713,
+        "negative": 0.004507,
+        "neutral": 0.049719
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "service": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "price": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "cleanliness": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "delivery": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "ambiance": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "app_experience": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "general": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Returned 'none' because no aspect signal survived post-processing."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 6255,
+    "review_text": "ابلكيشن كداب لما اطلب أوردر و يتلغى كذا مره مره عشان الفيزا و مرا عشان المطعم مش بيوصل و بعد كده يشيلوا المطعم خالص",
+    "predicted_aspects": [
+      "app_experience",
+      "delivery"
+    ],
+    "aspect_sentiments": {
+      "app_experience": "negative",
+      "delivery": "negative"
+    },
+    "confidence": 0.788372,
+    "aspect_probabilities": {
+      "food": 0.023021,
+      "service": 0.489739,
+      "price": 0.108196,
+      "cleanliness": 0.016715,
+      "delivery": 0.788372,
+      "ambiance": 0.013344,
+      "app_experience": 0.984299,
+      "general": 0.017643,
+      "none": 0.017867
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.023021,
+        "negative": 0.022084,
+        "neutral": 0.021624
+      },
+      "service": {
+        "positive": 0.025686,
+        "negative": 0.489739,
+        "neutral": 0.019163
+      },
+      "price": {
+        "positive": 0.011921,
+        "negative": 0.108196,
+        "neutral": 0.011888
+      },
+      "cleanliness": {
+        "positive": 0.016715,
+        "negative": 0.008654,
+        "neutral": 0.010514
+      },
+      "delivery": {
+        "positive": 0.026666,
+        "negative": 0.788372,
+        "neutral": 0.013244
+      },
+      "ambiance": {
+        "positive": 0.013344,
+        "negative": 0.013227,
+        "neutral": 0.011837
+      },
+      "app_experience": {
+        "positive": 0.010877,
+        "negative": 0.984299,
+        "neutral": 0.024061
+      },
+      "general": {
+        "positive": 0.006971,
+        "negative": 0.017643,
+        "neutral": 0.013511
+      },
+      "none": {
+        "positive": 0.009765,
+        "negative": 0.017867,
+        "neutral": 0.010243
+      }
+    },
+    "matched_keywords": {
+      "food": [
+        "طعم"
+      ],
+      "delivery": [
+        "طلب",
+        "وصل"
+      ],
+      "app_experience": [
+        "ابلكيشن"
+      ],
+      "general": [
+        "المطعم"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'delivery' at probability 0.788 above threshold 0.550.",
+      "Model kept aspect 'app_experience' at probability 0.984 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 9442,
+    "review_text": "هو تطبيق ممتاز بس لحد دلوقتي محجزتش من عليه بس هل دا ثقه ومعتمد",
+    "predicted_aspects": [
+      "app_experience"
+    ],
+    "aspect_sentiments": {
+      "app_experience": "positive"
+    },
+    "confidence": 0.38743,
+    "aspect_probabilities": {
+      "food": 0.010267,
+      "service": 0.018072,
+      "price": 0.020059,
+      "cleanliness": 0.012592,
+      "delivery": 0.024847,
+      "ambiance": 0.010811,
+      "app_experience": 0.53743,
+      "general": 0.01901,
+      "none": 0.018506
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.010267,
+        "negative": 0.006353,
+        "neutral": 0.007527
+      },
+      "service": {
+        "positive": 0.009303,
+        "negative": 0.018072,
+        "neutral": 0.008425
+      },
+      "price": {
+        "positive": 0.01001,
+        "negative": 0.020059,
+        "neutral": 0.011371
+      },
+      "cleanliness": {
+        "positive": 0.012592,
+        "negative": 0.009589,
+        "neutral": 0.003917
+      },
+      "delivery": {
+        "positive": 0.024847,
+        "negative": 0.018691,
+        "neutral": 0.007313
+      },
+      "ambiance": {
+        "positive": 0.008124,
+        "negative": 0.008989,
+        "neutral": 0.010811
+      },
+      "app_experience": {
+        "positive": 0.53743,
+        "negative": 0.265638,
+        "neutral": 0.036847
+      },
+      "general": {
+        "positive": 0.01901,
+        "negative": 0.015885,
+        "neutral": 0.012322
+      },
+      "none": {
+        "positive": 0.005963,
+        "negative": 0.006977,
+        "neutral": 0.018506
+      }
+    },
+    "matched_keywords": {
+      "app_experience": [
+        "تطبيق"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "service": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "price": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "ممتاز"
+        ]
+      },
+      "general": {
+        "positive": [
+          "ممتاز"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Contrast marker detected in review text.",
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Recovered aspect 'app_experience' from keywords/rules (score=0.737, threshold=0.400).",
+      "Lowered confidence for 'app_experience' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 4365,
+    "review_text": "المكان تحفه و الناس فوق الممتاز\nروحت عملت جلسة الشعر الياباني عجبتني جدا البنوتة اسمها ندي شاطورة اوي واديها حلو اوي بنصح كل البنات يروحو يجربو",
+    "predicted_aspects": [
+      "ambiance",
+      "service"
+    ],
+    "aspect_sentiments": {
+      "ambiance": "positive",
+      "service": "positive"
+    },
+    "confidence": 0.81345,
+    "aspect_probabilities": {
+      "food": 0.091158,
+      "service": 0.96345,
+      "price": 0.030362,
+      "cleanliness": 0.048618,
+      "delivery": 0.014442,
+      "ambiance": 0.975165,
+      "app_experience": 0.025435,
+      "general": 0.014165,
+      "none": 0.011667
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.091158,
+        "negative": 0.016882,
+        "neutral": 0.013815
+      },
+      "service": {
+        "positive": 0.96345,
+        "negative": 0.035971,
+        "neutral": 0.022264
+      },
+      "price": {
+        "positive": 0.030362,
+        "negative": 0.012282,
+        "neutral": 0.012917
+      },
+      "cleanliness": {
+        "positive": 0.048618,
+        "negative": 0.015025,
+        "neutral": 0.007918
+      },
+      "delivery": {
+        "positive": 0.014442,
+        "negative": 0.013934,
+        "neutral": 0.008966
+      },
+      "ambiance": {
+        "positive": 0.975165,
+        "negative": 0.039048,
+        "neutral": 0.012671
+      },
+      "app_experience": {
+        "positive": 0.025435,
+        "negative": 0.010327,
+        "neutral": 0.013738
+      },
+      "general": {
+        "positive": 0.014165,
+        "negative": 0.010002,
+        "neutral": 0.010231
+      },
+      "none": {
+        "positive": 0.011667,
+        "negative": 0.007952,
+        "neutral": 0.010064
+      }
+    },
+    "matched_keywords": {
+      "food": [
+        "حلو"
+      ],
+      "ambiance": [
+        "المكان",
+        "جلسه",
+        "مكان"
+      ],
+      "general": [
+        "مكان"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [
+          "حلو"
+        ]
+      },
+      "service": {
+        "positive": [
+          "تحفه",
+          "حلو",
+          "فوق الممتاز"
+        ]
+      },
+      "price": {
+        "positive": [
+          "تحفه",
+          "حلو",
+          "فوق الممتاز"
+        ]
+      },
+      "cleanliness": {
+        "positive": [
+          "تحفه",
+          "حلو",
+          "فوق الممتاز"
+        ]
+      },
+      "delivery": {
+        "positive": [
+          "تحفه",
+          "حلو",
+          "فوق الممتاز"
+        ]
+      },
+      "ambiance": {
+        "positive": [
+          "تحفه",
+          "فوق الممتاز"
+        ]
+      },
+      "app_experience": {
+        "positive": [
+          "تحفه",
+          "حلو",
+          "فوق الممتاز"
+        ]
+      },
+      "general": {
+        "positive": [
+          "تحفه",
+          "حلو",
+          "فوق الممتاز"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Model kept aspect 'service' at probability 0.963 above threshold 0.550.",
+      "Model kept aspect 'ambiance' at probability 0.975 above threshold 0.550.",
+      "Lowered confidence for 'ambiance' due to sarcasm candidate cues.",
+      "Lowered confidence for 'service' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 5812,
+    "review_text": "خدمة سيئة عملوا احتفال راس السنة 2026 الفرد ب1000 جنيه شامل وجبه العشاء اخذوا الفلوس وجلسنا ننتظر الوجبه ساعة ونص ولا احد عبرنا اقسم بالله تجربة سيئة ماتتكرر",
+    "predicted_aspects": [
+      "service",
+      "price"
+    ],
+    "aspect_sentiments": {
+      "service": "negative",
+      "price": "negative"
+    },
+    "confidence": 0.798461,
+    "aspect_probabilities": {
+      "food": 0.062489,
+      "service": 0.948461,
+      "price": 0.961054,
+      "cleanliness": 0.037145,
+      "delivery": 0.068028,
+      "ambiance": 0.150905,
+      "app_experience": 0.046932,
+      "general": 0.016355,
+      "none": 0.020259
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.008812,
+        "negative": 0.062489,
+        "neutral": 0.017276
+      },
+      "service": {
+        "positive": 0.041466,
+        "negative": 0.948461,
+        "neutral": 0.022146
+      },
+      "price": {
+        "positive": 0.020431,
+        "negative": 0.961054,
+        "neutral": 0.018143
+      },
+      "cleanliness": {
+        "positive": 0.008376,
+        "negative": 0.037145,
+        "neutral": 0.007932
+      },
+      "delivery": {
+        "positive": 0.008442,
+        "negative": 0.068028,
+        "neutral": 0.010865
+      },
+      "ambiance": {
+        "positive": 0.016801,
+        "negative": 0.150905,
+        "neutral": 0.005048
+      },
+      "app_experience": {
+        "positive": 0.016157,
+        "negative": 0.046932,
+        "neutral": 0.01256
+      },
+      "general": {
+        "positive": 0.016355,
+        "negative": 0.007895,
+        "neutral": 0.009999
+      },
+      "none": {
+        "positive": 0.011433,
+        "negative": 0.00709,
+        "neutral": 0.020259
+      }
+    },
+    "matched_keywords": {
+      "food": [
+        "وجبه"
+      ],
+      "service": [
+        "خدمه"
+      ],
+      "general": [
+        "تجربه"
+      ]
+    },
+    "matched_sentiment_terms": {
+      "service": {
+        "negative": [
+          "سيئه"
+        ]
+      },
+      "price": {
+        "negative": [
+          "سيئه",
+          "سيئه"
+        ]
+      },
+      "cleanliness": {
+        "negative": [
+          "سيئه",
+          "سيئه"
+        ]
+      },
+      "delivery": {
+        "negative": [
+          "سيئه",
+          "سيئه"
+        ]
+      },
+      "ambiance": {
+        "negative": [
+          "سيئه",
+          "سيئه"
+        ]
+      },
+      "app_experience": {
+        "negative": [
+          "سيئه",
+          "سيئه"
+        ]
+      },
+      "general": {
+        "negative": [
+          "سيئه"
+        ]
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Sarcasm candidate detected from laughter or ironic markers.",
+      "Model kept aspect 'service' at probability 0.948 above threshold 0.550.",
+      "Model kept aspect 'price' at probability 0.961 above threshold 0.550.",
+      "Lowered confidence for 'service' due to sarcasm candidate cues.",
+      "Lowered confidence for 'price' due to sarcasm candidate cues."
+    ],
+    "sarcasm_candidate": true,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 1479,
+    "review_text": "تقييم رانيا فريد شوقي",
+    "predicted_aspects": [
+      "none"
+    ],
+    "aspect_sentiments": {
+      "none": "neutral"
+    },
+    "confidence": 0.195906,
+    "aspect_probabilities": {
+      "food": 0.017574,
+      "service": 0.108619,
+      "price": 0.007357,
+      "cleanliness": 0.014723,
+      "delivery": 0.009932,
+      "ambiance": 0.015429,
+      "app_experience": 0.017261,
+      "general": 0.234753,
+      "none": 0.195906
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.017574,
+        "negative": 0.011114,
+        "neutral": 0.010198
+      },
+      "service": {
+        "positive": 0.108619,
+        "negative": 0.023785,
+        "neutral": 0.009031
+      },
+      "price": {
+        "positive": 0.006816,
+        "negative": 0.007315,
+        "neutral": 0.007357
+      },
+      "cleanliness": {
+        "positive": 0.006662,
+        "negative": 0.014723,
+        "neutral": 0.004285
+      },
+      "delivery": {
+        "positive": 0.007909,
+        "negative": 0.006935,
+        "neutral": 0.009932
+      },
+      "ambiance": {
+        "positive": 0.015429,
+        "negative": 0.009713,
+        "neutral": 0.007176
+      },
+      "app_experience": {
+        "positive": 0.015316,
+        "negative": 0.009501,
+        "neutral": 0.017261
+      },
+      "general": {
+        "positive": 0.234753,
+        "negative": 0.041501,
+        "neutral": 0.031043
+      },
+      "none": {
+        "positive": 0.007304,
+        "negative": 0.005347,
+        "neutral": 0.195906
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "service": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "price": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "cleanliness": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "delivery": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "ambiance": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "app_experience": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "general": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Returned 'none' because no aspect signal survived post-processing."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 329,
+    "review_text": "هعتبر ان المره دي متحسبتش علشان رمضان وهجرب بعد رمضان",
+    "predicted_aspects": [
+      "none"
+    ],
+    "aspect_sentiments": {
+      "none": "neutral"
+    },
+    "confidence": 0.055576,
+    "aspect_probabilities": {
+      "food": 0.131497,
+      "service": 0.050205,
+      "price": 0.015449,
+      "cleanliness": 0.020594,
+      "delivery": 0.035961,
+      "ambiance": 0.034971,
+      "app_experience": 0.042898,
+      "general": 0.168739,
+      "none": 0.055576
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.018332,
+        "negative": 0.131497,
+        "neutral": 0.018992
+      },
+      "service": {
+        "positive": 0.011167,
+        "negative": 0.050205,
+        "neutral": 0.01208
+      },
+      "price": {
+        "positive": 0.004674,
+        "negative": 0.015449,
+        "neutral": 0.013382
+      },
+      "cleanliness": {
+        "positive": 0.00762,
+        "negative": 0.020594,
+        "neutral": 0.00712
+      },
+      "delivery": {
+        "positive": 0.005909,
+        "negative": 0.035961,
+        "neutral": 0.01079
+      },
+      "ambiance": {
+        "positive": 0.012958,
+        "negative": 0.034971,
+        "neutral": 0.010188
+      },
+      "app_experience": {
+        "positive": 0.007468,
+        "negative": 0.042898,
+        "neutral": 0.024899
+      },
+      "general": {
+        "positive": 0.014045,
+        "negative": 0.168739,
+        "neutral": 0.031418
+      },
+      "none": {
+        "positive": 0.006631,
+        "negative": 0.007094,
+        "neutral": 0.055576
+      }
+    },
+    "matched_keywords": {},
+    "matched_sentiment_terms": {
+      "food": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "service": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "price": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "cleanliness": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "delivery": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "ambiance": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "app_experience": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      },
+      "general": {
+        "positive": [],
+        "negative": [],
+        "neutral": []
+      }
+    },
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Returned 'none' because no aspect signal survived post-processing."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 7382,
+    "review_text": "خدمه ممتازه",
+    "predicted_aspects": [
+      "service"
+    ],
+    "aspect_sentiments": {
+      "service": "positive"
+    },
+    "confidence": 0.963282,
+    "aspect_probabilities": {
+      "food": 0.01697,
+      "service": 0.963282,
+      "price": 0.010372,
+      "cleanliness": 0.016719,
+      "delivery": 0.0191,
+      "ambiance": 0.026566,
+      "app_experience": 0.018688,
+      "general": 0.021514,
+      "none": 0.015424
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.01697,
+        "negative": 0.008714,
+        "neutral": 0.009456
+      },
+      "service": {
+        "positive": 0.963282,
+        "negative": 0.019414,
+        "neutral": 0.009498
+      },
+      "price": {
+        "positive": 0.010372,
+        "negative": 0.010172,
+        "neutral": 0.007305
+      },
+      "cleanliness": {
+        "positive": 0.016719,
+        "negative": 0.005658,
+        "neutral": 0.003469
+      },
+      "delivery": {
+        "positive": 0.0191,
+        "negative": 0.012555,
+        "neutral": 0.005082
+      },
+      "ambiance": {
+        "positive": 0.026566,
+        "negative": 0.006656,
+        "neutral": 0.005507
+      },
+      "app_experience": {
+        "positive": 0.018688,
+        "negative": 0.009843,
+        "neutral": 0.009622
+      },
+      "general": {
+        "positive": 0.021514,
+        "negative": 0.011899,
+        "neutral": 0.008112
+      },
+      "none": {
+        "positive": 0.006694,
+        "negative": 0.003938,
+        "neutral": 0.015424
+      }
+    },
+    "matched_keywords": {
+      "service": [
+        "خدمه"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Model kept aspect 'service' at probability 0.963 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  },
+  {
+    "review_id": 5126,
+    "review_text": "الاسعار فوق المتوسطه بس الاجواء جميله والخدمة ممتازه",
+    "predicted_aspects": [
+      "ambiance",
+      "service"
+    ],
+    "aspect_sentiments": {
+      "ambiance": "positive",
+      "service": "positive"
+    },
+    "confidence": 0.962296,
+    "aspect_probabilities": {
+      "food": 0.447428,
+      "service": 0.962296,
+      "price": 0.445215,
+      "cleanliness": 0.061769,
+      "delivery": 0.025632,
+      "ambiance": 0.97142,
+      "app_experience": 0.018345,
+      "general": 0.011932,
+      "none": 0.009521
+    },
+    "sentiment_probabilities": {
+      "food": {
+        "positive": 0.447428,
+        "negative": 0.013762,
+        "neutral": 0.033672
+      },
+      "service": {
+        "positive": 0.962296,
+        "negative": 0.077488,
+        "neutral": 0.026751
+      },
+      "price": {
+        "positive": 0.445215,
+        "negative": 0.078773,
+        "neutral": 0.033851
+      },
+      "cleanliness": {
+        "positive": 0.061769,
+        "negative": 0.023333,
+        "neutral": 0.014114
+      },
+      "delivery": {
+        "positive": 0.025632,
+        "negative": 0.02353,
+        "neutral": 0.008089
+      },
+      "ambiance": {
+        "positive": 0.97142,
+        "negative": 0.072798,
+        "neutral": 0.02121
+      },
+      "app_experience": {
+        "positive": 0.011758,
+        "negative": 0.018345,
+        "neutral": 0.015049
+      },
+      "general": {
+        "positive": 0.00833,
+        "negative": 0.005564,
+        "neutral": 0.011932
+      },
+      "none": {
+        "positive": 0.009418,
+        "negative": 0.008464,
+        "neutral": 0.009521
+      }
+    },
+    "matched_keywords": {
+      "service": [
+        "الخدمه",
+        "خدمه"
+      ],
+      "price": [
+        "اسعار"
+      ],
+      "ambiance": [
+        "اجواء",
+        "جو"
+      ]
+    },
+    "matched_sentiment_terms": {},
+    "emoji_tokens": [],
+    "emoji_names": [],
+    "rule_decisions": [
+      "Contrast marker detected in review text.",
+      "Model kept aspect 'service' at probability 0.962 above threshold 0.550.",
+      "Model kept aspect 'ambiance' at probability 0.971 above threshold 0.550."
+    ],
+    "sarcasm_candidate": false,
+    "sentiment_conflict": false
+  }
+]
