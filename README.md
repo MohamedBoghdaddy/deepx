@@ -1,203 +1,171 @@
 # Arabic Aspect-Based Sentiment Analysis (ABSA)
 
-A production-style Arabic ABSA system using transformer models for detecting aspects and predicting sentiments in Arabic restaurant/service reviews.
+An Arabic ABSA pipeline for multi-label aspect and sentiment prediction on review data.
 
-## Project Overview
+## Overview
 
-This project implements a complete end-to-end Arabic Aspect-Based Sentiment Analysis system using:
-- **Model**: UBC-NLP/MARBERTv2 (Arabic BERT)
-- **Task Formulation**: Multi-label classification (27 labels = 9 aspects × 3 sentiments)
-- **Loss**: BCEWithLogitsLoss with sigmoid outputs
-- **Evaluation**: Micro F1 score
+- Task: multi-label classification with 27 labels = 9 aspects x 3 sentiments
+- Loss: `BCEWithLogitsLoss`
+- Primary metrics: micro F1 and macro F1
+- Output: competition-ready `submission.json`
+
+Supported model families:
+
+- AraBERT: stronger for Modern Standard Arabic and cleaner text
+- MARBERT: better for dialect, social media, and informal Arabic
 
 ## Dataset
 
-| File | Description | Size |
-|------|-------------|------|
-| `DeepX_train.xlsx` | Labeled training data | 1,971 samples |
-| `DeepX_validation.xlsx` | Labeled validation data | 500 samples |
-| `DeepX_unlabeled.xlsx` | Unlabeled test data | 7,047 samples |
-| `sample_submission.json` | Expected output format | - |
+Files live in the sibling `dataset/` directory:
 
-### Data Schema
+- `DeepX_train.xlsx`
+- `DeepX_validation.xlsx`
+- `DeepX_unlabeled.xlsx`
+- `sample_submission.json`
 
-**Training/Validation columns:**
-- `review_id`: Unique identifier
-- `review_text`: Arabic review text
-- `star_rating`: Rating (1-5)
-- `date`: Review date
-- `business_name`: Business name
-- `business_category`: Category
-- `platform`: Source platform
-- `aspects`: List of detected aspects (JSON array)
-- `aspect_sentiments`: Dict of aspect → sentiment (JSON object)
+Training and validation columns:
 
-**Test columns:**
-- Same as above but without `aspects` and `aspect_sentiments`
+- `review_id`
+- `review_text`
+- `star_rating`
+- `date`
+- `business_name`
+- `business_category`
+- `platform`
+- `aspects`
+- `aspect_sentiments`
 
-## Allowed Values
+Unlabeled columns:
 
-### Aspects
-- `food` - Food quality
-- `service` - Service quality
-- `price` - Price/value
-- `cleanliness` - Cleanliness
-- `delivery` - Delivery experience
-- `ambiance` - Ambiance/atmosphere
-- `app_experience` - App experience (for delivery apps)
-- `general` - General sentiment
-- `none` - No aspect detected
+- same schema without `aspects` and `aspect_sentiments`
 
-### Sentiments
-- `positive`
-- `negative`
-- `neutral`
+## Preprocessing
 
-## Project Structure
+Transformer preprocessing is intentionally light and safe:
 
-```
-deepx/
-├── src/
-│   ├── preprocess.py    # Arabic text preprocessing
-│   ├── dataset.py       # Data loading and encoding
-│   ├── train.py         # Model training
-│   ├── evaluate.py     # Evaluation and threshold tuning
-│   ├── predict.py      # Prediction on unlabeled data
-│   └── validator.py    # JSON validation
-├── requirements.txt    # Python dependencies
-└── README.md           # This file
-```
+- normalize Arabic letter variants
+- remove tashkeel
+- remove tatweel
+- remove URLs and mentions
+- keep hashtags as text
+- keep emojis when possible
+- do not remove stopwords
+- do not apply stemming
+- avoid aggressive punctuation stripping
 
-## Installation
+## Training
+
+Train by explicit model name:
 
 ```bash
-pip install -r requirements.txt
+python src/train.py --model_name aubmindlab/bert-base-arabertv02 --epochs 1
+python src/train.py --model_name UBC-NLP/MARBERT --epochs 1
 ```
 
-### Requirements
-- pandas>=2.0.0
-- openpyxl>=3.1.0
-- numpy>=1.24.0
-- torch>=2.0.0
-- transformers>=4.35.0
-- arabert>=2.1.0
-- scikit-learn>=1.3.0
-- tqdm>=4.65.0
-- scipy>=1.11.0
+Train by model family:
 
-## Usage
+```bash
+python src/train.py --model_family arabert --epochs 1
+python src/train.py --model_family marbert --epochs 1
+```
 
-### 1. Training
+Recommended first smoke tests:
+
+```bash
+python src/train.py --model_name aubmindlab/bert-base-arabertv02 --epochs 1 --output_dir outputs/arabert_smoke
+python src/train.py --model_name UBC-NLP/MARBERT --epochs 1 --output_dir outputs/marbert_smoke
+```
+
+Recommended final training commands:
+
+```bash
+python src/train.py --model_name aubmindlab/bert-base-arabertv02 --epochs 5 --batch_size 8 --output_dir outputs/arabert_final
+python src/train.py --model_name UBC-NLP/MARBERT --epochs 5 --batch_size 8 --output_dir outputs/marbert_final
+```
+
+Checkpoints include:
+
+- model weights
+- tokenizer files
+- label mapping
+- threshold config
+- training config
+
+## Evaluation
+
+Evaluate a saved checkpoint:
+
+```bash
+python src/evaluate.py --model_path outputs/arabert_smoke/model.pt
+python src/evaluate.py --model_path outputs/marbert_smoke/model.pt
+```
+
+This writes `outputs/validation_metrics.json` with:
+
+- `micro_f1`
+- `macro_f1`
+- `precision`
+- `recall`
+- `best_threshold`
+- `per_label`
+- `per_aspect`
+
+## Prediction
+
+Generate a submission from any saved checkpoint:
+
+```bash
+python src/predict.py --model_path outputs/arabert_smoke/model.pt --output_path submission.json
+python src/predict.py --model_path outputs/marbert_smoke/model.pt --output_path submission.json
+```
+
+The prediction script loads the tokenizer and model metadata from the checkpoint, so no hardcoded model name is required.
+
+## Validation
+
+Validate the generated submission:
+
+```bash
+python src/validator.py submission.json sample_submission.json
+```
+
+## Python API
 
 ```python
-from src.train import train_model
 from src.dataset import load_data
+from src.train import train_model
+from src.predict import run_prediction
 
-# Load data
 train_df, val_df, test_df = load_data(
-    'dataset/DeepX_train.xlsx',
-    'dataset/DeepX_validation.xlsx',
-    'dataset/DeepX_unlabeled.xlsx'
+    "../dataset/DeepX_train.xlsx",
+    "../dataset/DeepX_validation.xlsx",
+    "../dataset/DeepX_unlabeled.xlsx",
 )
 
-# Train model
 model, metrics, threshold = train_model(
     train_df,
     val_df,
-    model_name='marbert',
-    config={
-        'max_length': 256,
-        'batch_size': 16,
-        'learning_rate': 2e-5,
-        'num_epochs': 3
-    },
-    output_dir='outputs'
-)
-```
-
-### 2. Prediction
-
-```python
-from src.predict import run_prediction
-from src.dataset import load_data
-
-# Load test data
-_, _, test_df = load_data(
-    'dataset/DeepX_train.xlsx',
-    'dataset/DeepX_validation.xlsx',
-    'dataset/DeepX_unlabeled.xlsx'
+    model_name="aubmindlab/bert-base-arabertv02",
+    config={"num_epochs": 1, "batch_size": 8},
+    output_dir="outputs/arabert_api",
 )
 
-# Run prediction
 predictions = run_prediction(
-    test_df,
-    model_path='outputs/model.pt',
-    base_model_name='marbert',
-    output_path='submission.json',
-    threshold=0.5
+    test_df=test_df,
+    model_path="outputs/arabert_api/model.pt",
+    base_model_name=None,
+    output_path="submission.json",
 )
-```
-
-### 3. Validation
-
-```python
-from src.validator import validate_submission, print_validation_report
-
-# Validate submission
-is_valid, report = validate_submission(
-    'submission.json',
-    sample_submission_path='dataset/sample_submission.json',
-    test_df=test_df
-)
-
-# Print report
-print_validation_report(report)
-```
-
-## Arabic Preprocessing
-
-The preprocessing module handles:
-- Removing Arabic diacritics (tashkeel)
-- Normalizing Alef forms (أ, إ, آ → ا)
-- Removing tatweel (ـ)
-- Normalizing repeated characters
-- Cleaning extra whitespace
-
-## Model Architecture
-
-```
-Input Text → MARBERT/AraBERT → [CLS] Token → Dropout → Linear(768→27) → Sigmoid → Predictions
-```
-
-Each of the 27 output values represents the probability of an aspect-sentiment pair:
-- `food_positive`, `food_negative`, `food_neutral`
-- `service_positive`, `service_negative`, `service_neutral`
-- ... (9 aspects × 3 sentiments)
-
-## Output Format
-
-```json
-[
-  {
-    "review_id": 23,
-    "aspects": ["service", "ambiance", "food"],
-    "aspect_sentiments": {
-      "service": "positive",
-      "ambiance": "positive",
-      "food": "negative"
-    }
-  }
-]
 ```
 
 ## Notes
 
-- Column names are automatically detected from the Excel files
-- If no aspects are detected, the system outputs `["none"]` with `{"none": "neutral"}`
-- Threshold is tuned on validation data for optimal F1 score
-- The model uses GPU if available, otherwise falls back to CPU
+- CUDA is used automatically when available
+- If no aspect is detected, the output falls back to `["none"]` with `{"none": "neutral"}`
+- Evaluation and prediction can reload either AraBERT or MARBERT checkpoints
 
 ## References
 
-- [MARBERTv2](https://huggingface.co/UBC-NLP/MARBERTv2)
 - [AraBERT](https://huggingface.co/aubmindlab/bert-base-arabertv02)
+- [MARBERT](https://huggingface.co/UBC-NLP/MARBERT)
+- [MARBERTv2](https://huggingface.co/UBC-NLP/MARBERTv2)
