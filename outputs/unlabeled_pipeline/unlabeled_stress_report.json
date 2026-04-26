@@ -1,0 +1,576 @@
+{
+  "total_tested_samples": 5949,
+  "invalid_outputs_count": 0,
+  "multilingual_samples_count": 1066,
+  "franco_samples_count": 213,
+  "short_reviews_count": 1450,
+  "emoji_reviews_count": 281,
+  "low_confidence_count": 2187,
+  "none_predictions_count": 58,
+  "star_text_contradictions_count": 625,
+  "common_confused_aspects": [
+    {
+      "pair": [
+        "ambiance",
+        "food"
+      ],
+      "count": 575
+    },
+    {
+      "pair": [
+        "ambiance",
+        "service"
+      ],
+      "count": 504
+    },
+    {
+      "pair": [
+        "general",
+        "service"
+      ],
+      "count": 198
+    },
+    {
+      "pair": [
+        "ambiance",
+        "cleanliness"
+      ],
+      "count": 164
+    },
+    {
+      "pair": [
+        "food",
+        "price"
+      ],
+      "count": 112
+    },
+    {
+      "pair": [
+        "app_experience",
+        "service"
+      ],
+      "count": 107
+    },
+    {
+      "pair": [
+        "food",
+        "service"
+      ],
+      "count": 96
+    },
+    {
+      "pair": [
+        "app_experience",
+        "general"
+      ],
+      "count": 59
+    },
+    {
+      "pair": [
+        "ambiance",
+        "price"
+      ],
+      "count": 50
+    },
+    {
+      "pair": [
+        "delivery",
+        "service"
+      ],
+      "count": 50
+    }
+  ],
+  "examples_of_failure_cases": [
+    {
+      "failure_type": "low_confidence",
+      "review_id": 3,
+      "review_text": "حلو فخم كشخة محترم ورايق ينفع للعوائل الخليجية خصوصا انه اه مدخل للمول واو",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "food",
+        "ambiance",
+        "service",
+        "price"
+      ],
+      "predicted_sentiments": {
+        "food": "positive",
+        "ambiance": "positive",
+        "service": "positive",
+        "price": "positive"
+      },
+      "confidence_score": 0.492859,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "food",
+        "second": "ambiance",
+        "margin": 0.070041
+      }
+    },
+    {
+      "failure_type": "low_confidence",
+      "review_id": 4,
+      "review_text": "طبعا غني عن التعريف بتاع البشوات",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general",
+        "app_experience"
+      ],
+      "predicted_sentiments": {
+        "general": "positive",
+        "app_experience": "positive"
+      },
+      "confidence_score": 0.596887,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "app_experience",
+        "margin": 0.154794
+      }
+    },
+    {
+      "failure_type": "low_confidence",
+      "review_id": 5,
+      "review_text": "Centro commerciale al Cairo . . . Molto grande e bello",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general",
+        "service"
+      ],
+      "predicted_sentiments": {
+        "general": "positive",
+        "service": "positive"
+      },
+      "confidence_score": 0.572601,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.217372
+      }
+    },
+    {
+      "failure_type": "multilingual_low_confidence",
+      "review_id": 5,
+      "review_text": "Centro commerciale al Cairo . . . Molto grande e bello",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general",
+        "service"
+      ],
+      "predicted_sentiments": {
+        "general": "positive",
+        "service": "positive"
+      },
+      "confidence_score": 0.572601,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.217372
+      }
+    },
+    {
+      "failure_type": "multilingual_low_confidence",
+      "review_id": 34,
+      "review_text": "Acayip büyük bir AVM içeride aradığınız bir şey bulamamanız imkansız en ucuzundan en pahalısına her türlü mağaza ve restoran mevcur .",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "price",
+        "app_experience"
+      ],
+      "predicted_sentiments": {
+        "price": "positive",
+        "app_experience": "positive"
+      },
+      "confidence_score": 0.579971,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "price",
+        "second": "app_experience",
+        "margin": 0.296206
+      }
+    },
+    {
+      "failure_type": "multilingual_low_confidence",
+      "review_id": 55,
+      "review_text": "Ich glaube die meisten Menschen fahren mehr herum als daß sie arbeiten . . Chaos .",
+      "star_rating": 3.0,
+      "weak_sentiment": "neutral",
+      "predicted_aspects": [
+        "none"
+      ],
+      "predicted_sentiments": {
+        "none": "neutral"
+      },
+      "confidence_score": 0.51276,
+      "weak_signal_alignment": "ambiguous",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "app_experience",
+        "margin": 0.147973
+      }
+    },
+    {
+      "failure_type": "franco_low_confidence",
+      "review_id": 28,
+      "review_text": "Decent enough food , lamb was overcooked but still good . Be warned that as a foreigner , every person you make eye contact with will expect baksheesh and ask for it without shame . Unfortunately common in Egypt but even so this place stood out as being extra horrible with even the manger saying my 15% tip wasn’t enough and that he also needs his baksheesh , and then the guy outside also doing the same . They do NOT do this for locals . Disgusting behaviour .",
+      "star_rating": 2.0,
+      "weak_sentiment": "negative",
+      "predicted_aspects": [
+        "food",
+        "ambiance",
+        "cleanliness",
+        "service",
+        "price"
+      ],
+      "predicted_sentiments": {
+        "food": "negative",
+        "ambiance": "positive",
+        "cleanliness": "positive",
+        "service": "positive",
+        "price": "positive"
+      },
+      "confidence_score": 0.568593,
+      "weak_signal_alignment": "ambiguous",
+      "confused_aspect_pair": {
+        "first": "food",
+        "second": "ambiance",
+        "margin": 0.154585
+      }
+    },
+    {
+      "failure_type": "franco_low_confidence",
+      "review_id": 168,
+      "review_text": "stuff tohfa awii w team garden khater w karim 3asol gdan gdan tohfa EMO_POS EMO_POS EMO_POS EMO_POS",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general",
+        "service"
+      ],
+      "predicted_sentiments": {
+        "general": "positive",
+        "service": "positive"
+      },
+      "confidence_score": 0.565113,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.182049
+      }
+    },
+    {
+      "failure_type": "franco_low_confidence",
+      "review_id": 357,
+      "review_text": "531 The hospital is very good and good management nurses in 5th floor are so nice House keeping are good Cafeteria are good I thanks ms Diamond for her good heart",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "service",
+        "ambiance",
+        "cleanliness",
+        "food"
+      ],
+      "predicted_sentiments": {
+        "service": "positive",
+        "ambiance": "positive",
+        "cleanliness": "positive",
+        "food": "positive"
+      },
+      "confidence_score": 0.59954,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "service",
+        "second": "ambiance",
+        "margin": 0.037935
+      }
+    },
+    {
+      "failure_type": "short_review_edge_cases",
+      "review_id": 2,
+      "review_text": "زحمه جدا",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general"
+      ],
+      "predicted_sentiments": {
+        "general": "positive"
+      },
+      "confidence_score": 0.744519,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.477782
+      }
+    },
+    {
+      "failure_type": "short_review_edge_cases",
+      "review_id": 6,
+      "review_text": "Nice",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general"
+      ],
+      "predicted_sentiments": {
+        "general": "positive"
+      },
+      "confidence_score": 0.95512,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.741005
+      }
+    },
+    {
+      "failure_type": "short_review_edge_cases",
+      "review_id": 9,
+      "review_text": "ممتاز",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general"
+      ],
+      "predicted_sentiments": {
+        "general": "positive"
+      },
+      "confidence_score": 0.95213,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.718651
+      }
+    },
+    {
+      "failure_type": "emoji_edge_cases",
+      "review_id": 63,
+      "review_text": "I really like this year's Christmas decorations ~ : christmas_tree : : green_heart : EMO_POS",
+      "star_rating": 4.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general",
+        "ambiance"
+      ],
+      "predicted_sentiments": {
+        "general": "positive",
+        "ambiance": "positive"
+      },
+      "confidence_score": 0.312497,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.480529
+      }
+    },
+    {
+      "failure_type": "emoji_edge_cases",
+      "review_id": 72,
+      "review_text": "Amazing : clapping_hands : place EMO_POS",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general",
+        "app_experience"
+      ],
+      "predicted_sentiments": {
+        "general": "positive",
+        "app_experience": "positive"
+      },
+      "confidence_score": 0.230128,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.484371
+      }
+    },
+    {
+      "failure_type": "emoji_edge_cases",
+      "review_id": 168,
+      "review_text": "stuff tohfa awii w team garden khater w karim 3asol gdan gdan tohfa EMO_POS EMO_POS EMO_POS EMO_POS",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "general",
+        "service"
+      ],
+      "predicted_sentiments": {
+        "general": "positive",
+        "service": "positive"
+      },
+      "confidence_score": 0.565113,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "service",
+        "margin": 0.182049
+      }
+    },
+    {
+      "failure_type": "star_rating_text_contradictions",
+      "review_id": 7,
+      "review_text": "Very nice shopping but expensive .",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "price",
+        "food",
+        "ambiance"
+      ],
+      "predicted_sentiments": {
+        "price": "negative",
+        "food": "negative",
+        "ambiance": "negative"
+      },
+      "confidence_score": 0.725885,
+      "weak_signal_alignment": "contradictory",
+      "confused_aspect_pair": {
+        "first": "price",
+        "second": "food",
+        "margin": 0.121265
+      }
+    },
+    {
+      "failure_type": "star_rating_text_contradictions",
+      "review_id": 22,
+      "review_text": "الاكل نازل بارد والرز كان فيه شعره الاستيك ناشف جدا بجد تجربه وحشه جدا فصيام اول واخر مره فرع الشيخ زايد",
+      "star_rating": 1.0,
+      "weak_sentiment": "negative",
+      "predicted_aspects": [
+        "food"
+      ],
+      "predicted_sentiments": {
+        "food": "positive"
+      },
+      "confidence_score": 0.775345,
+      "weak_signal_alignment": "contradictory",
+      "confused_aspect_pair": {
+        "first": "food",
+        "second": "ambiance",
+        "margin": 0.375493
+      }
+    },
+    {
+      "failure_type": "star_rating_text_contradictions",
+      "review_id": 32,
+      "review_text": "ينقصة الاهتمام بمواقف السيارات",
+      "star_rating": 4.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "service"
+      ],
+      "predicted_sentiments": {
+        "service": "negative"
+      },
+      "confidence_score": 0.737985,
+      "weak_signal_alignment": "contradictory",
+      "confused_aspect_pair": {
+        "first": "service",
+        "second": "cleanliness",
+        "margin": 0.192114
+      }
+    },
+    {
+      "failure_type": "general_ambiance_app_confusion",
+      "review_id": 54,
+      "review_text": "مكان جميل",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "ambiance",
+        "general",
+        "service"
+      ],
+      "predicted_sentiments": {
+        "ambiance": "positive",
+        "general": "positive",
+        "service": "positive"
+      },
+      "confidence_score": 0.635575,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "ambiance",
+        "second": "general",
+        "margin": 0.023844
+      }
+    },
+    {
+      "failure_type": "general_ambiance_app_confusion",
+      "review_id": 67,
+      "review_text": "جيد للمشتريات المنزليه",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "none"
+      ],
+      "predicted_sentiments": {
+        "none": "neutral"
+      },
+      "confidence_score": 0.375051,
+      "weak_signal_alignment": "ambiguous",
+      "confused_aspect_pair": {
+        "first": "general",
+        "second": "app_experience",
+        "margin": 0.040378
+      }
+    },
+    {
+      "failure_type": "general_ambiance_app_confusion",
+      "review_id": 157,
+      "review_text": "متنوع الانشطه",
+      "star_rating": 5.0,
+      "weak_sentiment": "positive",
+      "predicted_aspects": [
+        "app_experience",
+        "general"
+      ],
+      "predicted_sentiments": {
+        "app_experience": "positive",
+        "general": "positive"
+      },
+      "confidence_score": 0.56628,
+      "weak_signal_alignment": "aligned",
+      "confused_aspect_pair": {
+        "first": "app_experience",
+        "second": "general",
+        "margin": 0.028833
+      }
+    }
+  ],
+  "recommendations": [
+    "Review threshold tuning and calibration because low-confidence predictions are common.",
+    "Add more multilingual and code-switched augmentation or pseudo-label review.",
+    "Expand the Franco-Arabic lexicon and manually label a small Franco subset.",
+    "Strengthen rules or training examples separating general, ambiance, and app_experience.",
+    "Add more short-review examples and lightweight rules for terse sentiment cues.",
+    "Augment emoji-heavy reviews and verify emoji polarity handling.",
+    "Inspect star-rating contradictions to find mixed price-vs-general or service-vs-overall cases."
+  ],
+  "cleaning_summary": {
+    "total_rows": 7047,
+    "clean_rows": 5949,
+    "empty_removed": 0,
+    "duplicates_removed": 1098,
+    "multilingual_rows": 1066,
+    "franco_rows": 213,
+    "emoji_rows": 281,
+    "weak_sentiment_distribution": {
+      "positive": 4458,
+      "negative": 1261,
+      "neutral": 230
+    },
+    "output_path": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\clean_unlabeled.csv"
+  },
+  "output_path": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\unlabeled_stress_report.json"
+}

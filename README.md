@@ -140,6 +140,16 @@ This writes:
 - `outputs/error_analysis.json`
 - `outputs/evaluation_report.md`
 
+## DeepX B2B Customer Needs Dashboard
+
+A Tkinter desktop dashboard that analyzes ABSA predictions and shows customer pain points, satisfaction drivers, management recommendations, and model benchmarks.
+
+Run from the project root:
+
+```bash
+python src/deepx_dashboard.py
+```
+
 ## Prediction
 
 Generate a submission from any saved checkpoint:

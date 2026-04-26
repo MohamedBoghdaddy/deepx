@@ -1,0 +1,109 @@
+{
+  "input_path": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\data\\processed\\DeepX_unlabeled.xlsx",
+  "model_dir": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs",
+  "confidence_threshold": 0.75,
+  "num_active_samples_requested": 200,
+  "clean_rows": 5949,
+  "pseudo_labeled_samples": 2003,
+  "active_learning_samples": 200,
+  "outputs": {
+    "clean_unlabeled": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\clean_unlabeled.csv",
+    "pseudo_labeled": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\pseudo_labeled.csv",
+    "aspect_keyword_report": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\aspect_keyword_report.json",
+    "active_learning_samples": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\active_learning_samples.csv",
+    "domain_adaptation_corpus": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\domain_adaptation_corpus.txt",
+    "unlabeled_stress_report": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\unlabeled_stress_report.json",
+    "pipeline_summary": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\pipeline_summary.json"
+  },
+  "cleaning_summary": {
+    "total_rows": 7047,
+    "clean_rows": 5949,
+    "empty_removed": 0,
+    "duplicates_removed": 1098,
+    "multilingual_rows": 1066,
+    "franco_rows": 213,
+    "emoji_rows": 281,
+    "weak_sentiment_distribution": {
+      "positive": 4458,
+      "negative": 1261,
+      "neutral": 230
+    },
+    "output_path": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\clean_unlabeled.csv"
+  },
+  "stress_test_summary": {
+    "invalid_outputs_count": 0,
+    "low_confidence_count": 2187,
+    "common_confused_aspects": [
+      {
+        "pair": [
+          "ambiance",
+          "food"
+        ],
+        "count": 575
+      },
+      {
+        "pair": [
+          "ambiance",
+          "service"
+        ],
+        "count": 504
+      },
+      {
+        "pair": [
+          "general",
+          "service"
+        ],
+        "count": 198
+      },
+      {
+        "pair": [
+          "ambiance",
+          "cleanliness"
+        ],
+        "count": 164
+      },
+      {
+        "pair": [
+          "food",
+          "price"
+        ],
+        "count": 112
+      },
+      {
+        "pair": [
+          "app_experience",
+          "service"
+        ],
+        "count": 107
+      },
+      {
+        "pair": [
+          "food",
+          "service"
+        ],
+        "count": 96
+      },
+      {
+        "pair": [
+          "app_experience",
+          "general"
+        ],
+        "count": 59
+      },
+      {
+        "pair": [
+          "ambiance",
+          "price"
+        ],
+        "count": 50
+      },
+      {
+        "pair": [
+          "delivery",
+          "service"
+        ],
+        "count": 50
+      }
+    ]
+  }
+}

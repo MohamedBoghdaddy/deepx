@@ -1,0 +1,35 @@
+[
+  {
+    "review_id": 23,
+    "aspects": [
+      "service",
+      "ambiance",
+      "food"
+    ],
+    "aspect_sentiments": {
+      "service": "positive",
+      "ambiance": "positive",
+      "food": "negative"
+    }
+  },
+  {
+    "review_id": 25,
+    "aspects": [
+      "delivery",
+      "service"
+    ],
+    "aspect_sentiments": {
+      "delivery": "negative",
+      "service": "negative"
+    }
+  },
+  {
+    "review_id": 65,
+    "aspects": [
+      "ambiance"
+    ],
+    "aspect_sentiments": {
+      "ambiance": "positive"
+    }
+  }
+]

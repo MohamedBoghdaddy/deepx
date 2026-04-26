@@ -21,13 +21,33 @@ from preprocess import ArabicPreprocessor
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DATA_ROOT = PROJECT_ROOT / "data"
+PROCESSED_DATA_ROOT = DATA_ROOT / "processed"
 DATASET_ROOT = PROJECT_ROOT.parent / "dataset"
 OUTPUTS_ROOT = PROJECT_ROOT / "outputs"
 
-DEFAULT_TRAIN_PATH = DATASET_ROOT / "DeepX_train.xlsx"
-DEFAULT_VALIDATION_PATH = DATASET_ROOT / "DeepX_validation.xlsx"
-DEFAULT_UNLABELED_PATH = DATASET_ROOT / "DeepX_unlabeled.xlsx"
-DEFAULT_SAMPLE_SUBMISSION_PATH = DATASET_ROOT / "sample_submission.json"
+
+def _default_dataset_path(filename: str) -> Path:
+    """Resolve the first sensible default location for a dataset artifact."""
+    candidate_roots = (
+        PROCESSED_DATA_ROOT,
+        DATA_ROOT,
+        PROJECT_ROOT.parent / "data" / "processed",
+        PROJECT_ROOT.parent / "data",
+        DATASET_ROOT,
+        PROJECT_ROOT,
+    )
+    for root in candidate_roots:
+        candidate = root / filename
+        if candidate.exists():
+            return candidate.resolve()
+    return (PROCESSED_DATA_ROOT / filename).resolve()
+
+
+DEFAULT_TRAIN_PATH = _default_dataset_path("DeepX_train.xlsx")
+DEFAULT_VALIDATION_PATH = _default_dataset_path("DeepX_validation.xlsx")
+DEFAULT_UNLABELED_PATH = _default_dataset_path("DeepX_unlabeled.xlsx")
+DEFAULT_SAMPLE_SUBMISSION_PATH = _default_dataset_path("sample_submission.json")
 
 VALID_ASPECTS = [
     "food",
@@ -62,6 +82,14 @@ COLUMN_ALIASES = {
         "aspect_polarity",
         "label_sentiments",
     ),
+    "star_rating": ("star_rating", "starrating", "stars", "rating", "review_rating"),
+    "business_category": (
+        "business_category",
+        "businesscategory",
+        "category",
+        "shop_category",
+    ),
+    "platform": ("platform", "source_platform", "app_platform", "channel"),
 }
 
 
@@ -87,25 +115,70 @@ def resolve_input_path(path: Optional[Path], default_path: Optional[Path] = None
     if path.is_absolute():
         return path
 
-    candidates = [path, PROJECT_ROOT / path, DATASET_ROOT / path, OUTPUTS_ROOT / path]
+    candidates = [
+        path,
+        PROJECT_ROOT / path,
+        DATA_ROOT / path,
+        PROCESSED_DATA_ROOT / path,
+        DATASET_ROOT / path,
+        PROJECT_ROOT.parent / path,
+        OUTPUTS_ROOT / path,
+    ]
+
+    path_name = Path(path).name
+    if path_name:
+        candidates.extend(
+            [
+                PROCESSED_DATA_ROOT / path_name,
+                DATA_ROOT / path_name,
+                DATASET_ROOT / path_name,
+                PROJECT_ROOT / path_name,
+                PROJECT_ROOT.parent / path_name,
+                OUTPUTS_ROOT / path_name,
+            ]
+        )
+
+    seen = set()
     for candidate in candidates:
+        normalized_candidate = candidate.resolve() if candidate.exists() else candidate
+        key = str(normalized_candidate)
+        if key in seen:
+            continue
+        seen.add(key)
         if candidate.exists():
             return candidate.resolve()
     return (PROJECT_ROOT / path).resolve()
 
+def load_dataframe(path):
+    """Load dataframe from Excel, CSV, or JSON with robust Excel handling."""
+    resolved_path = resolve_input_path(path, path) or Path(path)
 
-def load_dataframe(path: Path) -> pd.DataFrame:
-    """Load a spreadsheet or JSON file into a DataFrame."""
-    suffix = path.suffix.lower()
-    if suffix in {".xlsx", ".xls"}:
-        return pd.read_excel(path)
+    if not resolved_path.exists():
+        raise FileNotFoundError(f"File not found: {resolved_path}")
+
+    suffix = resolved_path.suffix.lower()
+
+    if suffix in {".xlsx", ".xlsm"}:
+        return pd.read_excel(resolved_path, engine="openpyxl")
+
+    if suffix == ".xls":
+        return pd.read_excel(resolved_path, engine="xlrd")
+
     if suffix == ".csv":
-        return pd.read_csv(path)
+        return pd.read_csv(resolved_path, encoding="utf-8-sig")
+
     if suffix == ".json":
-        return pd.read_json(path)
-    raise ValueError(f"Unsupported file type: {path}")
+        return pd.read_json(resolved_path)
 
-
+    # fallback
+    try:
+        return pd.read_excel(resolved_path, engine="openpyxl")
+    except Exception:
+        try:
+            return pd.read_csv(resolved_path, encoding="utf-8-sig")
+        except Exception:
+            return pd.read_json(resolved_path)
+        
 def infer_column_mapping(dataframe: pd.DataFrame, require_labels: bool = False) -> ColumnMapping:
     """Infer the canonical review/text/label columns without hardcoding exact names."""
     normalized_lookup = {
@@ -293,6 +366,22 @@ def compute_class_distribution(dataframe: pd.DataFrame) -> Dict[str, Any]:
     label_matrix = dataframe_to_label_matrix(dataframe)
     total_samples = int(label_matrix.shape[0])
     label_counts = label_matrix.sum(axis=0).astype(int)
+
+    sample_weights: Optional[np.ndarray] = None
+    weighted_label_counts: Optional[np.ndarray] = None
+    effective_num_samples: Optional[float] = None
+
+    if "sample_weight" in dataframe.columns and total_samples > 0:
+        sample_weights = (
+            pd.to_numeric(dataframe["sample_weight"], errors="coerce")
+            .fillna(1.0)
+            .clip(lower=0.0)
+            .to_numpy(dtype=np.float32)
+        )
+        if sample_weights.shape[0] == total_samples:
+            effective_num_samples = float(sample_weights.sum())
+            weighted_label_counts = (label_matrix * sample_weights.reshape(-1, 1)).sum(axis=0)
+
     label_distribution = {
         label: int(label_counts[index])
         for index, label in enumerate(ASPECT_SENTIMENT_LABELS)
@@ -315,7 +404,7 @@ def compute_class_distribution(dataframe: pd.DataFrame) -> Dict[str, Any]:
     )
     clipped_pos_weight = np.clip(raw_pos_weight, 1.0, 20.0)
 
-    return {
+    distribution: Dict[str, Any] = {
         "num_samples": total_samples,
         "label_distribution": label_distribution,
         "aspect_distribution": aspect_distribution,
@@ -334,10 +423,64 @@ def compute_class_distribution(dataframe: pd.DataFrame) -> Dict[str, Any]:
         },
     }
 
+    if weighted_label_counts is not None and effective_num_samples is not None:
+        weighted_aspect_distribution = {}
+        for aspect in VALID_ASPECTS:
+            indices = [LABEL_TO_IDX[f"{aspect}_{sentiment}"] for sentiment in VALID_SENTIMENTS]
+            weighted_aspect_distribution[aspect] = round(
+                float(weighted_label_counts[indices].sum()),
+                6,
+            )
+
+        weighted_sentiment_distribution = {}
+        for sentiment in VALID_SENTIMENTS:
+            indices = [LABEL_TO_IDX[f"{aspect}_{sentiment}"] for aspect in VALID_ASPECTS]
+            weighted_sentiment_distribution[sentiment] = round(
+                float(weighted_label_counts[indices].sum()),
+                6,
+            )
+
+        weighted_raw_pos_weight = (
+            (effective_num_samples - weighted_label_counts + 1.0) / (weighted_label_counts + 1.0)
+            if effective_num_samples > 0
+            else np.ones(len(ASPECT_SENTIMENT_LABELS), dtype=np.float32)
+        )
+        weighted_clipped_pos_weight = np.clip(weighted_raw_pos_weight, 1.0, 20.0)
+
+        distribution.update(
+            {
+                "sample_weight_column": "sample_weight",
+                "effective_num_samples": round(float(effective_num_samples), 6),
+                "weighted_label_distribution": {
+                    label: round(float(weighted_label_counts[index]), 6)
+                    for index, label in enumerate(ASPECT_SENTIMENT_LABELS)
+                },
+                "weighted_aspect_distribution": weighted_aspect_distribution,
+                "weighted_sentiment_distribution": weighted_sentiment_distribution,
+                "weighted_positive_ratio": {
+                    label: round(float(weighted_label_counts[index] / max(effective_num_samples, 1.0)), 6)
+                    for index, label in enumerate(ASPECT_SENTIMENT_LABELS)
+                },
+                "weighted_pos_weight_raw": {
+                    label: round(float(weighted_raw_pos_weight[index]), 6)
+                    for index, label in enumerate(ASPECT_SENTIMENT_LABELS)
+                },
+                "weighted_pos_weight_clipped": {
+                    label: round(float(weighted_clipped_pos_weight[index]), 6)
+                    for index, label in enumerate(ASPECT_SENTIMENT_LABELS)
+                },
+            }
+        )
+
+    return distribution
+
 
 def build_pos_weight_tensor(distribution: Mapping[str, Any]) -> torch.Tensor:
     """Create the BCE pos_weight tensor from distribution metadata."""
-    pos_weight_values = distribution.get("pos_weight_clipped", {})
+    pos_weight_values = distribution.get("weighted_pos_weight_clipped") or distribution.get(
+        "pos_weight_clipped",
+        {},
+    )
     values = [
         float(pos_weight_values.get(label, 1.0))
         for label in ASPECT_SENTIMENT_LABELS
@@ -405,6 +548,15 @@ class ABDataset(Dataset):
             aspects = parse_json_column(row[self.column_mapping.aspects])
             sentiments = parse_sentiment_dict(row[self.column_mapping.aspect_sentiments])
             item["labels"] = torch.from_numpy(create_multi_label_vector(aspects, sentiments))
+
+        if "sample_weight" in self.dataframe.columns:
+            sample_weight_value = pd.to_numeric(row.get("sample_weight"), errors="coerce")
+            if pd.isna(sample_weight_value):
+                sample_weight_value = 1.0
+            item["sample_weight"] = torch.tensor(
+                float(sample_weight_value),
+                dtype=torch.float32,
+            )
 
         return item
 

@@ -1,0 +1,1245 @@
+{
+  "total_reviews": 5949,
+  "window_size": 4,
+  "top_k": 15,
+  "aspects": {
+    "price": {
+      "seed_keywords": [
+        "expensive",
+        "cheap",
+        "overpriced",
+        "price",
+        "السعر",
+        "غالي",
+        "رخيص"
+      ],
+      "normalized_seed_keywords": [
+        "expensive",
+        "cheap",
+        "overpriced",
+        "price",
+        "السعر",
+        "غالي",
+        "رخيص"
+      ],
+      "matched_reviews": 154,
+      "top_neighbor_terms": [
+        {
+          "term": "the",
+          "count": 57
+        },
+        {
+          "term": "and",
+          "count": 41
+        },
+        {
+          "term": "for",
+          "count": 29
+        },
+        {
+          "term": "was",
+          "count": 14
+        },
+        {
+          "term": "very",
+          "count": 14
+        },
+        {
+          "term": "جدا",
+          "count": 13
+        },
+        {
+          "term": "بس",
+          "count": 12
+        },
+        {
+          "term": "but",
+          "count": 11
+        },
+        {
+          "term": "في",
+          "count": 10
+        },
+        {
+          "term": "Very",
+          "count": 9
+        },
+        {
+          "term": "it",
+          "count": 9
+        },
+        {
+          "term": "great",
+          "count": 9
+        },
+        {
+          "term": "quality",
+          "count": 8
+        },
+        {
+          "term": "to",
+          "count": 8
+        },
+        {
+          "term": "is",
+          "count": 8
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "for the",
+          "count": 14
+        },
+        {
+          "phrase": "the quality",
+          "count": 5
+        },
+        {
+          "phrase": "worth the",
+          "count": 4
+        },
+        {
+          "phrase": "it was",
+          "count": 4
+        },
+        {
+          "phrase": "for the quality",
+          "count": 3
+        },
+        {
+          "phrase": "to the",
+          "count": 3
+        },
+        {
+          "phrase": "علي الفاضي",
+          "count": 2
+        },
+        {
+          "phrase": "and it",
+          "count": 2
+        },
+        {
+          "phrase": "and it was",
+          "count": 2
+        },
+        {
+          "phrase": "compared to",
+          "count": 2
+        },
+        {
+          "phrase": "compared to the",
+          "count": 2
+        },
+        {
+          "phrase": "is very",
+          "count": 2
+        },
+        {
+          "phrase": "and great",
+          "count": 2
+        },
+        {
+          "phrase": "جدا بس",
+          "count": 2
+        },
+        {
+          "phrase": "جدا جدا",
+          "count": 2
+        }
+      ],
+      "example_reviews": [
+        "Very nice shopping but expensive .",
+        "Ramadan Iftar was below average and overpriced . Appetizers/side dish was served cold and the croquettes were cold and not freshly cooked . Mushroom Soup was average . Pizza ( margarita and chicken ) was good . Staff were nice but had to ask for someone to clear the table and dessert was served cold as well ( nutella bites ) .",
+        "Great place with great food . Highly recommend but somewhat expensive so try it if you are willing to get a good taste . Last time I visited yesterday the food was average though . So maybe it's not perfect all the time hahaha",
+        "قماش سوارية تحفة واسعار متوسطة في السعر",
+        "Great offers during Ramadan Food quality is really great Very competitive price and real value for money It's very rare to find good food during Ramadan , but they managed to do it"
+      ]
+    },
+    "cleanliness": {
+      "seed_keywords": [
+        "clean",
+        "dirty",
+        "toilets",
+        "نظيف",
+        "وسخ",
+        "حمام",
+        "حمامات"
+      ],
+      "normalized_seed_keywords": [
+        "clean",
+        "dirty",
+        "toilets",
+        "نظيف",
+        "وسخ",
+        "حمام",
+        "حمامات"
+      ],
+      "matched_reviews": 158,
+      "top_neighbor_terms": [
+        {
+          "term": "and",
+          "count": 86
+        },
+        {
+          "term": "very",
+          "count": 49
+        },
+        {
+          "term": "is",
+          "count": 44
+        },
+        {
+          "term": "the",
+          "count": 39
+        },
+        {
+          "term": "The",
+          "count": 36
+        },
+        {
+          "term": "place",
+          "count": 27
+        },
+        {
+          "term": "was",
+          "count": 26
+        },
+        {
+          "term": "clinic",
+          "count": 14
+        },
+        {
+          "term": "staff",
+          "count": 11
+        },
+        {
+          "term": "rooms",
+          "count": 10
+        },
+        {
+          "term": "well",
+          "count": 10
+        },
+        {
+          "term": "comfortable",
+          "count": 10
+        },
+        {
+          "term": "not",
+          "count": 9
+        },
+        {
+          "term": "are",
+          "count": 9
+        },
+        {
+          "term": "جدا",
+          "count": 9
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "is very",
+          "count": 14
+        },
+        {
+          "phrase": "The place",
+          "count": 12
+        },
+        {
+          "phrase": "place is",
+          "count": 11
+        },
+        {
+          "phrase": "and the",
+          "count": 10
+        },
+        {
+          "phrase": "clinic is",
+          "count": 9
+        },
+        {
+          "phrase": "The place is",
+          "count": 8
+        },
+        {
+          "phrase": "The clinic",
+          "count": 8
+        },
+        {
+          "phrase": "and comfortable",
+          "count": 7
+        },
+        {
+          "phrase": "place was",
+          "count": 6
+        },
+        {
+          "phrase": "the staff",
+          "count": 6
+        },
+        {
+          "phrase": "The clinic is",
+          "count": 6
+        },
+        {
+          "phrase": "and the staff",
+          "count": 5
+        },
+        {
+          "phrase": "the place",
+          "count": 5
+        },
+        {
+          "phrase": "and very",
+          "count": 5
+        },
+        {
+          "phrase": "clinic is very",
+          "count": 5
+        }
+      ],
+      "example_reviews": [
+        "Big mall and clean",
+        "An authentic experience that proves consistency still exists . This Restaurant continues to stand out with the same quality , flavor , and service every time I visit . In a time where many places change after they become popular , this restaurant keeps the original spirit alive — generous portions , clean environment , and staff who actually care about the customer experience . What I appreciate most is that they didn’t let success affect their standards . The food still tastes the same , the service is still fast , and the atmosphere still feels welcoming . This kind of stability is rare nowadays . Keep going the same way , and you’ll stay ahead of many others . Respect to the team for maintaining the level .",
+        "Beautiful rooms . . . . very clean . . . lovely staff",
+        "Great room , very clean , staff very friendly",
+        "I had a great experience at elrabea . The food was delicious , fresh , and well presented . The staff were very friendly and welcoming , and the service was quick . The place was clean and had a nice atmosphere . I would definitely recommend it and will come back again ."
+      ]
+    },
+    "delivery": {
+      "seed_keywords": [
+        "late",
+        "arrived",
+        "order",
+        "driver",
+        "تأخير",
+        "وصل",
+        "مندوب",
+        "طلب"
+      ],
+      "normalized_seed_keywords": [
+        "late",
+        "arrived",
+        "order",
+        "driver",
+        "تاخير",
+        "وصل",
+        "مندوب",
+        "طلب"
+      ],
+      "matched_reviews": 108,
+      "top_neighbor_terms": [
+        {
+          "term": "the",
+          "count": 34
+        },
+        {
+          "term": "and",
+          "count": 30
+        },
+        {
+          "term": "to",
+          "count": 16
+        },
+        {
+          "term": "we",
+          "count": 15
+        },
+        {
+          "term": "food",
+          "count": 13
+        },
+        {
+          "term": "was",
+          "count": 11
+        },
+        {
+          "term": "for",
+          "count": 10
+        },
+        {
+          "term": "my",
+          "count": 10
+        },
+        {
+          "term": "The",
+          "count": 10
+        },
+        {
+          "term": "after",
+          "count": 10
+        },
+        {
+          "term": "it",
+          "count": 8
+        },
+        {
+          "term": "الاوردر",
+          "count": 8
+        },
+        {
+          "term": "when",
+          "count": 7
+        },
+        {
+          "term": "في",
+          "count": 7
+        },
+        {
+          "term": "that",
+          "count": 6
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "the moment",
+          "count": 4
+        },
+        {
+          "phrase": "سئ جدا",
+          "count": 4
+        },
+        {
+          "phrase": "From the",
+          "count": 3
+        },
+        {
+          "phrase": "moment we",
+          "count": 3
+        },
+        {
+          "phrase": "From the moment",
+          "count": 3
+        },
+        {
+          "phrase": "the moment we",
+          "count": 3
+        },
+        {
+          "phrase": "for iftar",
+          "count": 3
+        },
+        {
+          "phrase": "The food",
+          "count": 3
+        },
+        {
+          "phrase": "the food",
+          "count": 3
+        },
+        {
+          "phrase": "on the",
+          "count": 3
+        },
+        {
+          "phrase": "want to",
+          "count": 2
+        },
+        {
+          "phrase": "when we",
+          "count": 2
+        },
+        {
+          "phrase": "was missing",
+          "count": 2
+        },
+        {
+          "phrase": "food never",
+          "count": 2
+        },
+        {
+          "phrase": "and no",
+          "count": 2
+        }
+      ],
+      "example_reviews": [
+        "I recently visited Ibn Al Sham restaurant and it was a really enjoyable experience . The place has a very warm and welcoming atmosphere that immediately makes you feel comfortable . The decoration gives strong Levantine vibes , and the smell of freshly grilled food makes you excited to try everything on the menu . The food was honestly the highlight of the visit . Everything tasted fresh and full of flavor . The grilled meats were perfectly cooked , juicy , and well - seasoned . The shawarma was also very good , with soft bread and a generous amount of filling . One thing I really liked was the variety of appetizers . The hummus , fattoush , and mutabbal were all delicious and tasted very authentic . The portions were great as well , which makes the place perfect for sharing with friends or family . You can order a few dishes and everyone can try a bit of everything . The presentation of the food was simple but very appetizing . The staff were friendly and helpful throughout the visit . The service was relatively fast and they were attentive without being intrusive . Overall , Ibn Al Sham is a great place if you’re craving good Syrian and Levantine food . Between the tasty dishes , generous portions , and comfortable atmosphere , it’s definitely a spot worth visiting again . I would absolutely recommend it to anyone who enjoys flavorful Middle Eastern cuisine .",
+        "Perfect breakfast , easy to park and getting order , caring about details .",
+        "So bad , too late . . . . 1 hours over for take my order",
+        "Food is average we had delivery from this branch and they messed up the order",
+        "I recently stayed at the hospital , and I truly cannot speak highly enough about the level of care we received . The service and nursing team were absolutely amazing — genuinely kind , attentive , and always willing to help . From the moment we arrived , I felt supported and cared for . Every member of the team showed professionalism , compassion , and a positive attitude that made a real difference during my stay . I would especially like to recognize Omniya and Amal for their impeccable service , consistency , and outstanding attitude . Their dedication was evident in everything they did . They clearly love their work , and most importantly , they truly love helping people . Their warmth and care brought comfort and reassurance during a time when it was needed most . Thank you to the entire team for turning what could have been a stressful experience into one filled with kindness and professionalism ."
+      ]
+    },
+    "service": {
+      "seed_keywords": [
+        "staff",
+        "service",
+        "employees",
+        "موظفين",
+        "تعامل",
+        "خدمة"
+      ],
+      "normalized_seed_keywords": [
+        "staff",
+        "service",
+        "employees",
+        "موظفين",
+        "تعامل",
+        "خدمة"
+      ],
+      "matched_reviews": 786,
+      "top_neighbor_terms": [
+        {
+          "term": "and",
+          "count": 395
+        },
+        {
+          "term": "the",
+          "count": 286
+        },
+        {
+          "term": "very",
+          "count": 130
+        },
+        {
+          "term": "The",
+          "count": 124
+        },
+        {
+          "term": "is",
+          "count": 110
+        },
+        {
+          "term": "was",
+          "count": 102
+        },
+        {
+          "term": "friendly",
+          "count": 83
+        },
+        {
+          "term": "food",
+          "count": 83
+        },
+        {
+          "term": "are",
+          "count": 66
+        },
+        {
+          "term": "great",
+          "count": 65
+        },
+        {
+          "term": "good",
+          "count": 64
+        },
+        {
+          "term": "for",
+          "count": 47
+        },
+        {
+          "term": "to",
+          "count": 45
+        },
+        {
+          "term": "of",
+          "count": 45
+        },
+        {
+          "term": "excellent",
+          "count": 43
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "and the",
+          "count": 78
+        },
+        {
+          "phrase": "food and",
+          "count": 25
+        },
+        {
+          "phrase": "very friendly",
+          "count": 25
+        },
+        {
+          "phrase": "friendly and",
+          "count": 23
+        },
+        {
+          "phrase": "are very",
+          "count": 19
+        },
+        {
+          "phrase": "of the",
+          "count": 19
+        },
+        {
+          "phrase": "was very",
+          "count": 17
+        },
+        {
+          "phrase": "and very",
+          "count": 16
+        },
+        {
+          "phrase": "is very",
+          "count": 15
+        },
+        {
+          "phrase": "very good",
+          "count": 14
+        },
+        {
+          "phrase": "but the",
+          "count": 13
+        },
+        {
+          "phrase": "very helpful",
+          "count": 13
+        },
+        {
+          "phrase": "the best",
+          "count": 10
+        },
+        {
+          "phrase": "for the",
+          "count": 10
+        },
+        {
+          "phrase": "to the",
+          "count": 10
+        }
+      ],
+      "example_reviews": [
+        "Mahmoud , cristina , rahama perfect service",
+        "Excellent place and their service fantastic",
+        "Friendly staff and great view",
+        "فندق رائع و خدمة ممتازه",
+        "Lovely staff ! Friendly and helpful . Superior food selection . Centrally located . Pool was perfect ."
+      ]
+    },
+    "food": {
+      "seed_keywords": [
+        "food",
+        "meal",
+        "taste",
+        "أكل",
+        "طعم",
+        "وجبة",
+        "مطعم"
+      ],
+      "normalized_seed_keywords": [
+        "food",
+        "meal",
+        "taste",
+        "اكل",
+        "طعم",
+        "وجبة",
+        "مطعم"
+      ],
+      "matched_reviews": 635,
+      "top_neighbor_terms": [
+        {
+          "term": "and",
+          "count": 220
+        },
+        {
+          "term": "the",
+          "count": 202
+        },
+        {
+          "term": "was",
+          "count": 129
+        },
+        {
+          "term": "The",
+          "count": 118
+        },
+        {
+          "term": "is",
+          "count": 84
+        },
+        {
+          "term": "good",
+          "count": 70
+        },
+        {
+          "term": "service",
+          "count": 62
+        },
+        {
+          "term": "very",
+          "count": 49
+        },
+        {
+          "term": "great",
+          "count": 48
+        },
+        {
+          "term": "for",
+          "count": 45
+        },
+        {
+          "term": "delicious",
+          "count": 37
+        },
+        {
+          "term": "with",
+          "count": 33
+        },
+        {
+          "term": "of",
+          "count": 33
+        },
+        {
+          "term": "جدا",
+          "count": 33
+        },
+        {
+          "term": "to",
+          "count": 32
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "and the",
+          "count": 46
+        },
+        {
+          "phrase": "the best",
+          "count": 12
+        },
+        {
+          "phrase": "was very",
+          "count": 12
+        },
+        {
+          "phrase": "very good",
+          "count": 11
+        },
+        {
+          "phrase": "service and",
+          "count": 11
+        },
+        {
+          "phrase": "and service",
+          "count": 10
+        },
+        {
+          "phrase": "was amazing",
+          "count": 9
+        },
+        {
+          "phrase": "of the",
+          "count": 8
+        },
+        {
+          "phrase": "but the",
+          "count": 8
+        },
+        {
+          "phrase": "is amazing",
+          "count": 8
+        },
+        {
+          "phrase": "في مصر",
+          "count": 7
+        },
+        {
+          "phrase": "was delicious",
+          "count": 7
+        },
+        {
+          "phrase": "was very good",
+          "count": 7
+        },
+        {
+          "phrase": "جميل جدا",
+          "count": 7
+        },
+        {
+          "phrase": "was great",
+          "count": 7
+        }
+      ],
+      "example_reviews": [
+        "This is our favorite family shopping spot in Cairo , where you’ll find numerous shops and a fantastic food court . Carrefour and Ikea make it a perfect shopping destination for families . Plus , there's plenty of parking available for your convenience .",
+        "One star should be generous ! The security think themselves angles protecting Jahnan ! Super rude No ramps for Handicapped or families with baby strollers ! ! ! ! ! No change tables in the washrooms They blocked the food court so you can’t bring a stroller in ! ! ! So many weird stuff resulted from poor planning and managmen",
+        "مطعم صبحي كابر من المطاعم الشهيرة في مصر ويتميز بالطعم المصري الاصيل",
+        "Give them a small tip and they’ll treat you like a prince ! Stayed a couple days in Cairo before eating here and was struggling with the food in Egypt until we found this place we constantly went back",
+        "Decent enough food , lamb was overcooked but still good . Be warned that as a foreigner , every person you make eye contact with will expect baksheesh and ask for it without shame . Unfortunately common in Egypt but even so this place stood out as being extra horrible with even the manger saying my 15% tip wasn’t enough and that he also needs his baksheesh , and then the guy outside also doing the same . They do NOT do this for locals . Disgusting behaviour ."
+      ]
+    },
+    "ambiance": {
+      "seed_keywords": [
+        "place",
+        "crowded",
+        "quiet",
+        "atmosphere",
+        "مكان",
+        "زحمة",
+        "هادي",
+        "جو"
+      ],
+      "normalized_seed_keywords": [
+        "place",
+        "crowded",
+        "quiet",
+        "atmosphere",
+        "مكان",
+        "زحمة",
+        "هادي",
+        "جو"
+      ],
+      "matched_reviews": 597,
+      "top_neighbor_terms": [
+        {
+          "term": "and",
+          "count": 165
+        },
+        {
+          "term": "the",
+          "count": 143
+        },
+        {
+          "term": "is",
+          "count": 101
+        },
+        {
+          "term": "The",
+          "count": 82
+        },
+        {
+          "term": "this",
+          "count": 74
+        },
+        {
+          "term": "to",
+          "count": 67
+        },
+        {
+          "term": "جدا",
+          "count": 46
+        },
+        {
+          "term": "for",
+          "count": 46
+        },
+        {
+          "term": "was",
+          "count": 45
+        },
+        {
+          "term": "good",
+          "count": 42
+        },
+        {
+          "term": "very",
+          "count": 41
+        },
+        {
+          "term": "with",
+          "count": 39
+        },
+        {
+          "term": "food",
+          "count": 39
+        },
+        {
+          "term": "جميل",
+          "count": 38
+        },
+        {
+          "term": "nice",
+          "count": 37
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "and the",
+          "count": 24
+        },
+        {
+          "phrase": "Very nice",
+          "count": 14
+        },
+        {
+          "phrase": "clean and",
+          "count": 13
+        },
+        {
+          "phrase": "is very",
+          "count": 11
+        },
+        {
+          "phrase": "recommend this",
+          "count": 11
+        },
+        {
+          "phrase": "food and",
+          "count": 9
+        },
+        {
+          "phrase": "of the",
+          "count": 8
+        },
+        {
+          "phrase": "very good",
+          "count": 7
+        },
+        {
+          "phrase": "the food",
+          "count": 7
+        },
+        {
+          "phrase": "very clean",
+          "count": 7
+        },
+        {
+          "phrase": "is so",
+          "count": 7
+        },
+        {
+          "phrase": "جدا جدا",
+          "count": 6
+        },
+        {
+          "phrase": "very nice",
+          "count": 6
+        },
+        {
+          "phrase": "is perfect",
+          "count": 6
+        },
+        {
+          "phrase": "جميل جدا",
+          "count": 6
+        }
+      ],
+      "example_reviews": [
+        "مكان تحفه واكل جميل",
+        "Give them a small tip and they’ll treat you like a prince ! Stayed a couple days in Cairo before eating here and was struggling with the food in Egypt until we found this place we constantly went back",
+        "Decent enough food , lamb was overcooked but still good . Be warned that as a foreigner , every person you make eye contact with will expect baksheesh and ask for it without shame . Unfortunately common in Egypt but even so this place stood out as being extra horrible with even the manger saying my 15% tip wasn’t enough and that he also needs his baksheesh , and then the guy outside also doing the same . They do NOT do this for locals . Disgusting behaviour .",
+        "Pretty big mal with lots of diff brands from home to beauty , sport and electronics with a huge food court . You can spend a half a day and discover the place there is a free wifi for guests too . The only downside was very difficult to find a uber spot but the rest was pretty good . For Eu traveler’s the prices in eu brands are way higher than back home .",
+        "مكان كتير حلو"
+      ]
+    },
+    "app_experience": {
+      "seed_keywords": [
+        "app",
+        "application",
+        "website",
+        "booking",
+        "تطبيق",
+        "ابلكيشن",
+        "موقع",
+        "حجز"
+      ],
+      "normalized_seed_keywords": [
+        "app",
+        "application",
+        "website",
+        "booking",
+        "تطبيق",
+        "ابلكيشن",
+        "موقع",
+        "حجز"
+      ],
+      "matched_reviews": 309,
+      "top_neighbor_terms": [
+        {
+          "term": "جدا",
+          "count": 56
+        },
+        {
+          "term": "رائع",
+          "count": 32
+        },
+        {
+          "term": "ممتاز",
+          "count": 29
+        },
+        {
+          "term": "the",
+          "count": 27
+        },
+        {
+          "term": "افضل",
+          "count": 26
+        },
+        {
+          "term": "في",
+          "count": 21
+        },
+        {
+          "term": "من",
+          "count": 20
+        },
+        {
+          "term": "جميل",
+          "count": 14
+        },
+        {
+          "term": "علي",
+          "count": 13
+        },
+        {
+          "term": "فاشل",
+          "count": 12
+        },
+        {
+          "term": "and",
+          "count": 11
+        },
+        {
+          "term": "to",
+          "count": 10
+        },
+        {
+          "term": "is",
+          "count": 10
+        },
+        {
+          "term": "for",
+          "count": 9
+        },
+        {
+          "term": "كل",
+          "count": 9
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "سئ جدا",
+          "count": 8
+        },
+        {
+          "phrase": "رائع جدا",
+          "count": 8
+        },
+        {
+          "phrase": "جميل جدا",
+          "count": 6
+        },
+        {
+          "phrase": "ممتاز وسهل",
+          "count": 5
+        },
+        {
+          "phrase": "في العالم",
+          "count": 5
+        },
+        {
+          "phrase": "سيئ جدا",
+          "count": 4
+        },
+        {
+          "phrase": "جيد جدا",
+          "count": 4
+        },
+        {
+          "phrase": "مستر بيست",
+          "count": 4
+        },
+        {
+          "phrase": "is not",
+          "count": 4
+        },
+        {
+          "phrase": "اكثر من",
+          "count": 3
+        },
+        {
+          "phrase": "جدا جدا",
+          "count": 3
+        },
+        {
+          "phrase": "ممتاز جدا",
+          "count": 3
+        },
+        {
+          "phrase": "طلبات من",
+          "count": 2
+        },
+        {
+          "phrase": "يبقي متعملوش",
+          "count": 2
+        },
+        {
+          "phrase": "من رائع",
+          "count": 2
+        }
+      ],
+      "example_reviews": [
+        "خدمة سريعة جودة عالية في رمضان زحام شديد يجب حجز طلبات الافطار بدري بدري",
+        "الاكل 10/10 ماشاءالله لذيذ مره انا اشتريت كوبون ٢ من تطبيق وفرها وفعلا طلع لذيذ ماشاءالله وكفي وزياده علي 3 اشخاص كبار وطفل وخدمتهم ممتازه واخلاقهم عاليه جدا",
+        "Muy mal , de la reserva de booking combraron 30 dólares extra no se sabe porque . Pedimos pieza con una cama y nos dieron una con dos cama chica . Las cortinas no cierran Pero lo más terrible es que estuvieron taladrando 40 min a las 4 am… Enfin para algo es ir nos costó 90 dólares no aplica para nada .",
+        "الاكل جيد جدا والمكان والخدمة رائعه ، المكان يحتاج حجز",
+        "طلبت من الابلكيشن ٢ كيلو ونص يالنجي و جالي كيلو ونص بس بعد ساعتين اساسا و خدمة العملاء عندهم فالضياع الاليم بجد بقولهم مستعجله و محتاجه الكيلو التاني تقولي البنت منا مستنيه رد الفرع مرتين اكلمها تقولي نفس الكلام و حاجه في منتهي الاستهتار بوقت العميل . . لو مش عارفين تاخدوا طلبات من ابلكيشن يبقي متعملوش ابلكيشن اصلا دا كدا منتهي الفشل و لما كتبت الكلام دا فكومنتات علي صفحتهم عملولي بلوك . . قله ادب"
+      ]
+    },
+    "general": {
+      "seed_keywords": [
+        "good",
+        "bad",
+        "nice",
+        "excellent",
+        "حلو",
+        "وحش",
+        "ممتاز",
+        "كويس"
+      ],
+      "normalized_seed_keywords": [
+        "good",
+        "bad",
+        "nice",
+        "excellent",
+        "حلو",
+        "وحش",
+        "ممتاز",
+        "كويس"
+      ],
+      "matched_reviews": 1118,
+      "top_neighbor_terms": [
+        {
+          "term": "and",
+          "count": 308
+        },
+        {
+          "term": "very",
+          "count": 191
+        },
+        {
+          "term": "جدا",
+          "count": 189
+        },
+        {
+          "term": "was",
+          "count": 173
+        },
+        {
+          "term": "the",
+          "count": 159
+        },
+        {
+          "term": "is",
+          "count": 143
+        },
+        {
+          "term": "service",
+          "count": 124
+        },
+        {
+          "term": "food",
+          "count": 112
+        },
+        {
+          "term": "Very",
+          "count": 90
+        },
+        {
+          "term": "The",
+          "count": 80
+        },
+        {
+          "term": "are",
+          "count": 67
+        },
+        {
+          "term": "place",
+          "count": 61
+        },
+        {
+          "term": "to",
+          "count": 50
+        },
+        {
+          "term": "experience",
+          "count": 50
+        },
+        {
+          "term": "for",
+          "count": 48
+        }
+      ],
+      "top_neighbor_phrases": [
+        {
+          "phrase": "and the",
+          "count": 34
+        },
+        {
+          "phrase": "is very",
+          "count": 32
+        },
+        {
+          "phrase": "was very",
+          "count": 31
+        },
+        {
+          "phrase": "food was",
+          "count": 28
+        },
+        {
+          "phrase": "جدا جدا",
+          "count": 26
+        },
+        {
+          "phrase": "The food",
+          "count": 20
+        },
+        {
+          "phrase": "service was",
+          "count": 19
+        },
+        {
+          "phrase": "service is",
+          "count": 18
+        },
+        {
+          "phrase": "the food",
+          "count": 18
+        },
+        {
+          "phrase": "the service",
+          "count": 17
+        },
+        {
+          "phrase": "The food was",
+          "count": 16
+        },
+        {
+          "phrase": "was really",
+          "count": 15
+        },
+        {
+          "phrase": "are very",
+          "count": 14
+        },
+        {
+          "phrase": "and very",
+          "count": 14
+        },
+        {
+          "phrase": "food and",
+          "count": 13
+        }
+      ],
+      "example_reviews": [
+        "حلو فخم كشخة محترم ورايق ينفع للعوائل الخليجية خصوصا انه اه مدخل للمول واو",
+        "Very nice shopping but expensive .",
+        "ممتاز",
+        "مكن ممتاز لتسوق و لقضاء يوم مع الاولاد",
+        "Decent enough food , lamb was overcooked but still good . Be warned that as a foreigner , every person you make eye contact with will expect baksheesh and ask for it without shame . Unfortunately common in Egypt but even so this place stood out as being extra horrible with even the manger saying my 15% tip wasn’t enough and that he also needs his baksheesh , and then the guy outside also doing the same . They do NOT do this for locals . Disgusting behaviour ."
+      ]
+    }
+  },
+  "cleaning_summary": {
+    "total_rows": 7047,
+    "clean_rows": 5949,
+    "empty_removed": 0,
+    "duplicates_removed": 1098,
+    "multilingual_rows": 1066,
+    "franco_rows": 213,
+    "emoji_rows": 281,
+    "weak_sentiment_distribution": {
+      "positive": 4458,
+      "negative": 1261,
+      "neutral": 230
+    },
+    "output_path": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\clean_unlabeled.csv"
+  },
+  "output_path": "C:\\Users\\Moham\\Documents\\hackathon\\deepx\\deepx\\outputs\\unlabeled_pipeline\\aspect_keyword_report.json"
+}
