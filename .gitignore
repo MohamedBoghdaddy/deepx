@@ -211,4 +211,4 @@ outputs/model.pt
 outputs/arabert_smoke/model.pt
 outputs/marbert_final
 outputs/arabert_final/model.pt
-output/xlmr_final/model.pt
+outputs/xlmr_final/model.pt
